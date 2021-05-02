@@ -19,7 +19,7 @@ namespace Microsoft.Extensions.DependencyInjection
         public static IServiceCollection AddAsanPardakhtIpg(this IServiceCollection services, IConfiguration configuration)
         {
             services.Configure<Config>(configuration.GetSection("AsanPardakhtIPGConfig"));
-            services.AddSingleton<Config>(s => s.GetRequiredService<IOptions<Config>>().Value);
+            services.AddSingleton<Config>(s => configuration.GetSection("AsanPardakhtIPGConfig").Get<Config>());
 
             services.AddAsanPardakhtIpg();
 

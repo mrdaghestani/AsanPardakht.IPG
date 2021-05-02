@@ -1,18 +1,26 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    ViewData["Title"] = "AsanPardakht IPG Sample";
 }
-
-<div class="text-center">
-    <h1 class="display-4">AsanPardakht IPG Sample</h1>
-    <form asp-action="Pay">
-        <div class="form-group">
-            <label for="amount">Amount:</label>
-            <input type="text" class="form-control" placeholder="amount in rials" id="amount" name="Amount">
+<br />
+<div class="row">
+    <div class="col-lg-3 col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <span>پرداخت</span>
+            </div>
+            <div class="panel-body">
+                <form asp-action="Pay">
+                    <div class="form-group">
+                        <label for="amount">مبلغ:</label>
+                        <input type="text" class="form-control ltr" placeholder="مبلغ به ریال" id="amount" name="Amount">
+                    </div>
+                    <div class="form-group">
+                        <label for="mobile">موبایل:</label>
+                        <input type="text" class="form-control ltr" placeholder="شماره موبایل" id="mobile" name="Mobile">
+                    </div>
+                    <button type="submit" class="btn btn-primary">پرداخت</button>
+                </form>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="mobile">Mobile:</label>
-            <input type="text" class="form-control" placeholder="mobile number" id="mobile" name="Mobile">
-        </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+    </div>
 </div>

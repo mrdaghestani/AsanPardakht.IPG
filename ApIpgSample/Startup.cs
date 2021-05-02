@@ -1,9 +1,11 @@
+using AsanPardakht.IPG;
 using AsanPardakht.IPG.Abstractions;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,13 +18,6 @@ namespace ApIpgSample
         public Startup(IConfiguration configuration, IWebHostEnvironment env)
         {
             Configuration = configuration;
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddEnvironmentVariables()
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile("appsettings.Development.json", optional: true);
-
-            Configuration = builder.Build();
         }
 
         public IConfiguration Configuration { get; }
@@ -30,6 +25,7 @@ namespace ApIpgSample
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
             services.AddSingleton<ILocalInvoiceIdGenerator, LocalInvoiceIdGenerator>();
             services.AddAsanPardakhtIpg(Configuration);
 

@@ -1,8 +1,10 @@
 ﻿using ApIpgSample.Models;
+using AsanPardakht.IPG;
 using AsanPardakht.IPG.Abstractions;
 using AsanPardakht.IPG.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -16,10 +18,12 @@ namespace ApIpgSample.Controllers
         private readonly ILogger<HomeController> _logger;
         private readonly IServices _services;
 
-        public HomeController(ILogger<HomeController> logger, AsanPardakht.IPG.Abstractions.IServices services)
+        public HomeController(ILogger<HomeController> logger, IServices services, IOptionsMonitor<Config> config)
         {
             _logger = logger;
             _services = services;
+
+            _logger.LogInformation("{@config}", config.CurrentValue.MerchantPassword);
         }
 
         public IActionResult Index()
