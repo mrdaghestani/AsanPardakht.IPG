@@ -1,0 +1,38 @@
+﻿@model AsanPardakht.IPG.ApiModels.Responses.GenerateTokenResponse
+@{
+    ViewData["Title"] = "در حال انتقال برای پرداخت";
+}
+<h3 class="text-center">
+    در حال انتقال برای پرداخت
+</h3>
+<p class="text-center">
+    لطفاً منتظر بمانید
+</p>
+
+@section Scripts{
+    <script type="text/javascript">
+        function postRefId(gatewayUrl, refId, mobileap) {
+            var form = document.createElement("form");
+            form.setAttribute("method", "POST");
+            form.setAttribute("action", gatewayUrl);
+            form.setAttribute("target", "_self");
+
+            var refIdField = document.createElement("input");
+            refIdField.setAttribute("name", "RefId");
+            refIdField.setAttribute("value", refId);
+            form.appendChild(refIdField);
+
+            if (mobileap) {
+                var mobileField = document.createElement("input");
+                mobileField.setAttribute("name", "Mobileap");
+                mobileField.setAttribute("value", mobileap);
+                form.appendChild(mobileField);
+            }
+
+            document.body.appendChild(form);
+            form.submit();
+            document.body.removeChild(form);
+        }
+        postRefId('@(Model.GatewayUrl)', '@(Model.RefId)', '@(Model.Mobileap)');
+    </script>
+}

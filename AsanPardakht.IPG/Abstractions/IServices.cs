@@ -1,0 +1,25 @@
+﻿using AsanPardakht.IPG.ApiModels.Requests;
+using AsanPardakht.IPG.ApiModels.Responses;
+using AsanPardakht.IPG.Models;
+using System;
+using System.Collections.Generic;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace AsanPardakht.IPG.Abstractions
+{
+    public interface IServices
+    {
+        Task<GenerateTokenResponse> GenerateToken(GenerateTokenRequest data);
+        Task<VerifyResponse> Verify(VerifyRequest data);
+        Task<VerifyResponse> Verify(ulong payGateTranId);
+        Task<GetTranResultResponse> GetTranResult(GetTranResultRequest data);
+        Task<GetTranResultResponse> GetTranResult(ulong localInvoiceId);
+        Task<SettleResponse> Settle(SettleRequest data);
+        Task<SettleResponse> Settle(ulong payGateTranId);
+        Task<ReverseResponse> Reverse(ReverseRequest data);
+        Task<ReverseResponse> Reverse(ulong payGateTranId);
+        Task<GenerateTokenResponse> GenerateBuyToken(ulong localInvoiceId, ulong amountInRials, string callbackURL, string mobileNumber, string additionalData = null, string paymentId = null, List<SettlementPortion> settlementPortions = null);
+        Task<GenerateTokenResponse> GenerateBuyToken(ulong amountInRials, string callbackURL, string mobileNumber, string additionalData = null, string paymentId = null, List<SettlementPortion> settlementPortions = null);
+    }
+}

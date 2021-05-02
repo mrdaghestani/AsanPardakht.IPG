@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">AsanPardakht IPG Sample</h1>
+    <form asp-action="Pay">
+        <div class="form-group">
+            <label for="amount">Amount:</label>
+            <input type="text" class="form-control" placeholder="amount in rials" id="amount" name="Amount">
+        </div>
+        <div class="form-group">
+            <label for="mobile">Mobile:</label>
+            <input type="text" class="form-control" placeholder="mobile number" id="mobile" name="Mobile">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
