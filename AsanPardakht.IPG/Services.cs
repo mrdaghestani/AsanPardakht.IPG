@@ -212,5 +212,10 @@ namespace AsanPardakht.IPG
             };
             return Reverse(request);
         }
+
+        public Task<string> GetTime()
+        {
+            return _client.Execute<string>(HttpMethod.Get, "/v1/Time");
+        }
     }
 }

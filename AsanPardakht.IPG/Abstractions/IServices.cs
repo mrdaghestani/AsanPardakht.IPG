@@ -10,6 +10,7 @@ namespace AsanPardakht.IPG.Abstractions
 {
     public interface IServices
     {
+        Task<string> GetTime();
         Task<GenerateTokenResponse> GenerateToken(GenerateTokenRequest data);
         Task<VerifyResponse> Verify(VerifyRequest data);
         Task<VerifyResponse> Verify(ulong payGateTranId);

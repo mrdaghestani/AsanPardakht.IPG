@@ -43,10 +43,13 @@ namespace ApIpgSample.Controllers
 
                 var verifyResult = await _services.Verify(tranResult.PayGateTranID);
 
+                var time = await _services.GetTime();
+
                 var model = new CallbackViewModel
                 {
                     TranResult = tranResult,
                     VerifyResult = verifyResult,
+                    Time = time,
                 };
 
                 return View(model);

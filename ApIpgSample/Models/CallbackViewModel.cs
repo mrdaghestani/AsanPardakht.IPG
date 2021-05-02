@@ -10,5 +10,6 @@ namespace ApIpgSample.Models
     {
         public GetTranResultResponse TranResult { get; internal set; }
         public VerifyResponse VerifyResult { get; internal set; }
+        public string Time { get; internal set; }
     }
 }
