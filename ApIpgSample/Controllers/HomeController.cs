@@ -40,7 +40,10 @@ namespace ApIpgSample.Controllers
         {
             try
             {
-                var callbackUrl = $"{Request.Scheme}://{Request.Host}/Home/Callback/{{0}}";
+                var scheme = Request.Headers["X-Forwarded-Proto"].ToString();
+                if (string.IsNullOrWhiteSpace(scheme))
+                    scheme = Request.Scheme;
+                var callbackUrl = $"{scheme}://{Request.Host}/Home/Callback/{{0}}";
                 var tokenModel = await _services.GenerateBuyToken(data.Amount, callbackUrl, data.Mobile);
                 return View(tokenModel);
             }
