@@ -34,9 +34,19 @@ namespace ApIpgSample.Controllers
         [HttpPost]
         public async Task<IActionResult> Pay(PayViewModel data)
         {
-            var callbackUrl = $"{Request.Scheme}://{Request.Host}/Home/Callback/{{0}}";
-            var tokenModel = await _services.GenerateBuyToken(data.Amount, callbackUrl, data.Mobile);
-            return View(tokenModel);
+            try
+            {
+                var callbackUrl = $"{Request.Scheme}://{Request.Host}/Home/Callback/{{0}}";
+                var tokenModel = await _services.GenerateBuyToken(data.Amount, callbackUrl, data.Mobile);
+                return View(tokenModel);
+            }
+            catch (Exception exc)
+            {
+                return View("Error", new ErrorViewModel
+                {
+                    Message = exc.Message
+                });
+            }
         }
         [HttpPost("{controller}/{action}/{localInvoiceId}")]
         public async Task<IActionResult> Callback(ulong localInvoiceId)
