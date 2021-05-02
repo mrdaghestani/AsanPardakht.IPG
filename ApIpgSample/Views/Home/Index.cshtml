@@ -1,8 +1,174 @@
-﻿@{
+﻿@model CallbackViewModel
+@{
     ViewData["Title"] = "AsanPardakht IPG Sample";
 }
 <br />
 <div class="row">
+    @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+    {
+        <div class="col-lg-3 col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span>خطا</span>
+                </div>
+                <div class="panel-body">
+                    <p>
+                        @Model.ErrorMessage
+                    </p>
+                </div>
+            </div>
+        </div>
+    }
+    @if (Model.TranResult != null)
+    {
+        <div class="col-lg-6 col-md-8">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <span>نتیجه تراکنش</span>
+                </div>
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-xs-12">
+                            <h5 class="text-center">اطلاعات تراکنش اصلی</h5>
+                            <table class="table table-bordered table-striped ltr">
+                                <tr>
+                                    <th>Amount:</th>
+                                    <td>@Model.TranResult.Amount</td>
+                                </tr>
+                                <tr>
+                                    <th>CardNumber:</th>
+                                    <td>@Model.TranResult.CardNumber</td>
+                                </tr>
+                                <tr>
+                                    <th>LocalInvoiceId:</th>
+                                    <td>@Model.TranResult.LocalInvoiceId</td>
+                                </tr>
+                                <tr>
+                                    <th>PayGateTranID:</th>
+                                    <td>@Model.TranResult.PayGateTranID</td>
+                                </tr>
+                                <tr>
+                                    <th>RefID:</th>
+                                    <td>@Model.TranResult.RefID</td>
+                                </tr>
+                                <tr>
+                                    <th>RRN:</th>
+                                    <td>@Model.TranResult.RRN</td>
+                                </tr>
+                                <tr>
+                                    <th>ServiceTypeId:</th>
+                                    <td>@Model.TranResult.ServiceTypeId</td>
+                                </tr>
+                            </table>
+                            <h5 class="text-center">اطلاعات ارائه سرویس</h5>
+                            @if (Model.TranResult.ServiceType == AsanPardakht.IPG.Models.ServiceType.Buy)
+                            {
+
+
+                                <div class="alert alert-info">
+                                    تراکنش خرید سرویس جانبی ندارد
+                                </div>
+                            }
+                            else
+                            {
+                                <table class="table table-bordered table-striped ltr">
+                                    <tr>
+                                        <th>BillId:</th>
+                                        <td>@Model.TranResult.BillId</td>
+                                    </tr>
+                                    <tr>
+                                        <th>BillOrganizationNameFa:</th>
+                                        <td>@Model.TranResult.BillOrganizationNameFa</td>
+                                    </tr>
+                                    <tr>
+                                        <th>OperatorId:</th>
+                                        <td>@Model.TranResult.OperatorId</td>
+                                    </tr>
+                                    <tr>
+                                        <th>OperatorNameFa:</th>
+                                        <td>@Model.TranResult.OperatorNameFa</td>
+                                    </tr>
+                                    <tr>
+                                        <th>ProductId:</th>
+                                        <td>@Model.TranResult.ProductId</td>
+                                    </tr>
+                                    <tr>
+                                        <th>ProductNameFa:</th>
+                                        <td>@Model.TranResult.ProductNameFa</td>
+                                    </tr>
+                                    <tr>
+                                        <th>ProductPrice:</th>
+                                        <td>@Model.TranResult.ProductPrice</td>
+                                    </tr>
+                                    <tr>
+                                        <th>SimTypeId:</th>
+                                        <td>@Model.TranResult.SimTypeId</td>
+                                    </tr>
+                                    <tr>
+                                        <th>SimTypeTitleFa:</th>
+                                        <td>@Model.TranResult.SimTypeTitleFa</td>
+                                    </tr>
+                                    <tr>
+                                        <th>ServiceStatusCode:</th>
+                                        <td>
+                                            @Model.TranResult.ServiceStatusCode
+                                            @if (Model.TranResult.IsSuccessServiceStatusCode)
+                                            {
+                                                <span class="label-success">
+                                                    موفق
+                                                </span>
+                                            }
+                                            else
+                                            {
+                                                <span class="label-danger">
+                                                    ناموفق
+                                                </span>
+                                            }
+                                        </td>
+                                    </tr>
+                                </table>
+                            }
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-xs-12">
+                            @if (Model.VerifyResult == null)
+                            {
+                                <div class="alert alert-info">
+                                    این تراکنش به صورت اتوماتیک وریفای میگردد
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="alert alert-success">
+                                    تراکنش با موفقیت وریفای شد
+                                </div>
+                                <div class="row">
+                                    <div class="col-xs-6">
+                                        <a class="btn btn-success btn-block">Settle Transaction</a>
+                                    </div>
+                                    <div class="col-xs-6">
+                                        <a class="btn btn-danger btn-block">Reverse Transaction</a>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+    <div class="col-lg-3 col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <span>پاسخ متد زمان سرور</span>
+            </div>
+            <div class="panel-body ltr">
+                <span>@Model.Time</span>
+            </div>
+        </div>
+    </div>
     <div class="col-lg-3 col-md-4">
         <div class="panel panel-default">
             <div class="panel-heading">
@@ -11,16 +177,92 @@
             <div class="panel-body">
                 <form asp-action="Pay">
                     <div class="form-group">
-                        <label for="amount">مبلغ:</label>
-                        <input type="text" class="form-control ltr" placeholder="مبلغ به ریال" id="amount" name="Amount">
+                        <label>مبلغ:</label>
+                        <input type="text" class="form-control ltr" placeholder="مبلغ به ریال" name="Amount">
                     </div>
                     <div class="form-group">
-                        <label for="mobile">موبایل:</label>
-                        <input type="text" class="form-control ltr" placeholder="شماره موبایل" id="mobile" name="Mobile">
+                        <label>موبایل:</label>
+                        <input type="text" class="form-control ltr" placeholder="شماره موبایل" name="Mobile">
                     </div>
-                    <button type="submit" class="btn btn-primary">پرداخت</button>
+                    <button type="submit" class="btn btn-primary btn-block">پرداخت</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <span>خرید شارژ موبایل</span>
+            </div>
+            <div class="panel-body">
+                <form asp-action="PayCharge">
+                    <div class="form-group">
+                        <label>موبایل شارژ شونده:</label>
+                        <input type="text" class="form-control ltr" placeholder="شماره موبایل شارژ" name="DestinationMobile">
+                    </div>
+                    <div class="form-group">
+                        <label>نوع شارژ:</label>
+                        <select class="form-control">
+                            <option data-telecom-operator-id="" data-product-id="" data-amount="">----</option>
+                            <optgroup label="همراه اول">
+                                <option data-telecom-operator-id="1" data-product-id="514" data-amount="10000">1,000 توماني</option>
+                                <option data-telecom-operator-id="1" data-product-id="515" data-amount="20000">2,000 توماني</option>
+                                <option data-telecom-operator-id="1" data-product-id="516" data-amount="50000">5,000 توماني</option>
+                            </optgroup>
+                            <optgroup label="ایرانسل">
+                                <option data-telecom-operator-id="2" data-product-id="509" data-amount="10900">1,000 توماني</option>
+                                <option data-telecom-operator-id="2" data-product-id="510" data-amount="21800">2,000 توماني</option>
+                                <option data-telecom-operator-id="2" data-product-id="511" data-amount="54500">5,000 توماني</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>کد اپراتور:</label>
+                        <input type="text" class="form-control ltr" placeholder="کد اپراتور" name="TelecomOperatorId">
+                    </div>
+                    <div class="form-group">
+                        <label>کد شارژ:</label>
+                        <input type="text" class="form-control ltr" placeholder="کد شارژ" name="ProductId">
+                    </div>
+                    <div class="form-group">
+                        <label>مبلغ:</label>
+                        <input type="text" class="form-control ltr" placeholder="مبلغ به ریال" name="Amount">
+                    </div>
+                    <div class="form-group">
+                        <label>موبایل:</label>
+                        <input type="text" class="form-control ltr" placeholder="شماره موبایل" name="Mobile">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">پرداخت</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
+
+@section Scripts{
+    <script type="text/javascript">
+        var page = {
+            init: function () {
+                $('select').each(function () {
+                    var select = $(this);
+                    var form = select.closest('form');
+                    select.change(function () {
+                        var selectedItem = $(this).find("option:selected");
+                        var data = selectedItem.data();
+                        for (var name in data) {
+                            var inputName = name.replace(/\b[a-z]/g, function (letter) {
+                                return letter.toUpperCase();
+                            });
+                            var input = form.find('input[type="text"][name="' + inputName + '"]');
+                            var value = data[name];
+                            input.val(value);
+                            input.prop('readonly', value && true);
+                        }
+                    });
+                });
+            }
+        };
+        $(document).ready(page.init);
+    </script>
+}

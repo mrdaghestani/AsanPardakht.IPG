@@ -20,7 +20,7 @@ namespace AsanPardakht.IPG.Abstractions
         Task<SettleResponse> Settle(ulong payGateTranId);
         Task<ReverseResponse> Reverse(ReverseRequest data);
         Task<ReverseResponse> Reverse(ulong payGateTranId);
-        Task<GenerateTokenResponse> GenerateBuyToken(ulong localInvoiceId, ulong amountInRials, string callbackURL, string mobileNumber, string additionalData = null, string paymentId = null, List<SettlementPortion> settlementPortions = null);
-        Task<GenerateTokenResponse> GenerateBuyToken(ulong amountInRials, string callbackURL, string mobileNumber, string additionalData = null, string paymentId = null, List<SettlementPortion> settlementPortions = null);
+        Task<GenerateTokenResponse> GenerateBuyToken(ulong amountInRials, string callbackURL, string mobileNumber = null);
+        Task<GenerateTokenResponse> GenerateTelecomeChargeToken(ulong amountInRials, string callbackURL, TelecomeChargeData chargeData, string mobileNumber = null);
     }
 }

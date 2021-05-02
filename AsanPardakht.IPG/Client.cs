@@ -54,7 +54,8 @@ namespace AsanPardakht.IPG
 
             if (data != null)
             {
-                request.Content = new StringContent(JsonConvert.SerializeObject(data, _serializerSettings), Encoding.UTF8, "application/json");
+                var requestContent = JsonConvert.SerializeObject(data, _serializerSettings);
+                request.Content = new StringContent(requestContent, Encoding.UTF8, "application/json");
             }
 
             var response = await _client.SendAsync(request);

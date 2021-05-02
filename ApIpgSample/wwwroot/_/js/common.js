@@ -243,7 +243,7 @@
                         formGroup.addClass('input-ltr');
 
                     var setClearState = function () {
-                        if (input.val() == '')
+                        if (input.val() == '' || input.prop('readonly'))
                             formGroup.find('.fa-times-circle').css('display', 'none');
                         else
                             formGroup.find('.fa-times-circle').css('display', 'inline-block');

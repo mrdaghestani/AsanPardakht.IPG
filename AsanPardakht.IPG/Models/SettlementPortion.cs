@@ -6,8 +6,14 @@ namespace AsanPardakht.IPG.Models
 {
     public class SettlementPortion
     {
-        public string IBAN { get; set; }
-        public ulong AmountInRials { get; set; }
-        public string PaymentId { get; set; } = "0";
+        public SettlementPortion(string iban, ulong amountInRials, string paymentId = null)
+        {
+            IBAN = iban;
+            AmountInRials = amountInRials;
+            PaymentId = string.IsNullOrWhiteSpace(paymentId) ? "0" : paymentId.Trim();
+        }
+        public string IBAN { get; private set; }
+        public ulong AmountInRials { get; private set; }
+        public string PaymentId { get; private set; }
     }
 }

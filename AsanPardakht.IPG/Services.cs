@@ -41,8 +41,6 @@ namespace AsanPardakht.IPG
         }
         public async Task<GenerateTokenResponse> GenerateToken(GenerateTokenRequest data)
         {
-            data.CallbackURL = string.Format(data.CallbackURL, data.LocalInvoiceId);
-
             var response = await _client.TryExecute<string>(HttpMethod.Post, "/v1/Token", data);
 
             switch (response.responseStatusCode)
@@ -61,28 +59,6 @@ namespace AsanPardakht.IPG
                     throw response.exception;
             }
 
-        }
-        public Task<GenerateTokenResponse> GenerateBuyToken(ulong localInvoiceId, ulong amountInRials, string callbackURL, string mobileNumber, string additionalData = null, string paymentId = null, List<SettlementPortion> settlementPortions = null)
-        {
-            var request = new GenerateTokenRequest
-            {
-                ServiceTypeId = (int)ServiceType.Buy,
-                MerchantConfigurationId = _config.MerchantConfigurationId,
-                AmountInRials = amountInRials,
-                CallbackURL = callbackURL,
-                LocalInvoiceId = localInvoiceId,
-                AdditionalData = additionalData,
-                PaymentId = paymentId,
-                SettlementPortions = settlementPortions,
-                MobileNumber = mobileNumber
-            };
-
-            return GenerateToken(request);
-        }
-        public async Task<GenerateTokenResponse> GenerateBuyToken(ulong amountInRials, string callbackURL, string mobileNumber, string additionalData = null, string paymentId = null, List<SettlementPortion> settlementPortions = null)
-        {
-            var localInvoiceId = await GetNextLocalInvoiceId();
-            return await GenerateBuyToken(localInvoiceId, amountInRials, callbackURL, mobileNumber, additionalData, paymentId, settlementPortions);
         }
 
         public async Task<VerifyResponse> Verify(VerifyRequest data)
@@ -216,6 +192,26 @@ namespace AsanPardakht.IPG
         public Task<string> GetTime()
         {
             return _client.Execute<string>(HttpMethod.Get, "/v1/Time");
+        }
+
+        public async Task<GenerateTokenResponse> GenerateBuyToken(ulong amountInRials, string callbackURL, string mobileNumber = null)
+        {
+            var request = new GenerateTokenRequest(_config.MerchantConfigurationId, await _localInvoiceIdGenerator.GetNext(), amountInRials, callbackURL);
+            if (!string.IsNullOrWhiteSpace(mobileNumber))
+                request.SetMobileNumber(mobileNumber);
+            return await GenerateToken(request);
+        }
+
+        public async Task<GenerateTokenResponse> GenerateTelecomeChargeToken(ulong amountInRials, string callbackURL, TelecomeChargeData chargeData, string mobileNumber = null)
+        {
+            if (chargeData == null)
+                throw new ArgumentNullException(nameof(chargeData));
+
+            var request = new GenerateTokenRequest(_config.MerchantConfigurationId, await _localInvoiceIdGenerator.GetNext(), amountInRials, callbackURL)
+                .SetTelecomeCharge(chargeData);
+            if (!string.IsNullOrWhiteSpace(mobileNumber))
+                request.SetMobileNumber(mobileNumber);
+            return await GenerateToken(request);
         }
     }
 }

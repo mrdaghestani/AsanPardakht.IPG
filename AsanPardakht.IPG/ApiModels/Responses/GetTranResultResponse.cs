@@ -1,6 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using AsanPardakht.IPG.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Runtime.Serialization;
 using System.Text;
 
@@ -16,11 +18,26 @@ namespace AsanPardakht.IPG.ApiModels.Responses
         public ulong PayGateTranID { get; set; }
         [JsonProperty("salesOrderID")]
         public ulong LocalInvoiceId { get; set; }
+        public ServiceType ServiceType
+        {
+            get
+            {
+                return (ServiceType)ServiceTypeId;
+            }
+        }
 
         /// <summary>
         /// هش کارت
         /// </summary>
         public string Hash { get; set; }
+
+        public bool IsSuccessServiceStatusCode
+        {
+            get
+            {
+                return new[] { "500", "600" }.Contains(ServiceStatusCode?.Trim());
+            }
+        }
 
         #region Sub Service Result Info
         /// <summary>
