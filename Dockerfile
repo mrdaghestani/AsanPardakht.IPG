@@ -4,6 +4,7 @@ COPY . .
 
 ARG VERSION=1.0.0
 ARG APIKEY=APIKEY
+
 RUN dotnet restore && dotnet build -c Release \
     && dotnet pack -c Release -p:PackageVersion=${VERSION} -o /app/build AsanPardakht.IPG \
     && dotnet nuget push -k $APIKEY -s https://www.nuget.org/api/v2/package /app/build/AsanPardakht.IPG.${VERSION}.nupkg \
@@ -13,11 +14,16 @@ RUN dotnet restore && dotnet build -c Release \
 FROM build AS publish
 RUN dotnet publish -c Release -o /app/publish
 
-#--------------------------------
 FROM mcr.microsoft.com/dotnet/core/aspnet:3.1-buster-slim AS final
 ARG VERSION=1.0
+ARG APUSER=user
+ARG APPASS=pass
+ARG APMCID=1234
 ENV AppConfigs__Version=${VERSION}
 ENV AppConfigs__IsDevelopment=false
+ENV AsanPardakhtIPGConfig__MerchantUser=${APUSER}
+ENV AsanPardakhtIPGConfig__MerchantPassword=${APPASS}
+ENV AsanPardakhtIPGConfig__MerchantConfigurationId=${APMCID}
 WORKDIR /app
 COPY --from=publish /app/publish .
 EXPOSE 80

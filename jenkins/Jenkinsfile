@@ -4,10 +4,15 @@ node {
     }
 
     stage('Build Image') {
-        withCredentials([string(credentialsId: 'nuget_apikey', variable: 'apiKey')]) {
+        withCredentials([
+            string(credentialsId: 'nuget_apikey', variable: 'apiKey')
+            , string(credentialsId: 'ap_user', variable: 'ap_user')
+            , string(credentialsId: 'ap_pass', variable: 'ap_pass')
+            , string(credentialsId: 'ap_mcid', variable: 'ap_mcid')
+        ]) {
             imageName = "ap_ipg_sample";
             version = "1.0.${currentBuild.number}";
-            app = docker.build("${imageName}:${version}", " --build-arg VERSION=${version} --build-arg APIKEY=${apiKey} .");
+            app = docker.build("${imageName}:${version}", " --build-arg VERSION=${version} --build-arg APIKEY=${apiKey} --build-arg APUSER=${ap_user} --build-arg APPASS=${ap_pass} --build-arg APMCID=${ap_mcid} .");
         }
     }
 
