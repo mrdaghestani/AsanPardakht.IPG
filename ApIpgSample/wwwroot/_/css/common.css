@@ -1,0 +1,78 @@
+@font-face {
+    font-family: 'IRANSans';
+    font-style: normal;
+    font-weight: normal;
+    src: url('../fonts/IRANSans-web.eot');
+    src: url('../fonts/IRANSans-web.eot?#iefix') format('eot'), /* IE6-8 */
+    url('../fonts/IRANSans-web.woff') format('woff'), /* FF3.6+, IE9, Chrome6+, Saf5.1+*/
+    url('../fonts/IRANSans-web.ttf') format('truetype');
+}
+
+@font-face {
+    font-family: "yekan";
+    src: url(../fonts/Yekan.eot);
+    src: url(../fonts/Yekan.eot?#iefix) format("embedded-opentype"), /**/
+    url(../fonts/Yekan.woff) format("woff"), /**/
+    url(../fonts/Yekan.ttf) format("truetype"), /**/
+    url(../fonts/Yekan.svg#BYekan) format("svg");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: IRANYekanDigits;
+    src: url(../fonts/24659979.eot);
+    src: url(../fonts/24659979.eot?#iefix) format("embedded-opentype"), /**/
+    url(../fonts/9a3fc3d8.woff2) format("woff2"), /**/
+    url(../fonts/b7443b71.woff) format("woff"), /**/
+    url(../fonts/29a4348a.ttf) format("truetype");
+    font-weight: 300;
+    font-style: normal
+}
+
+body, html {
+    direction: rtl;
+    font-family: IRANYekanDigits,'yekan';
+    cursor: default;
+    background-color: #fafafa;
+    min-height: 100% !important;
+    height: 100%;
+}
+
+.ltr {
+    direction: ltr;
+}
+
+.rtl {
+    direction: rtl;
+}
+
+.form-group {
+    position: relative;
+}
+
+
+    .form-group .controls {
+        position: absolute;
+        color: #D8DCE1;
+        top: 31px;
+        left: 10px;
+    }
+
+    .form-group.input-ltr .controls {
+        right: 10px;
+        left: initial;
+    }
+
+    .form-group .controls i {
+        margin: 3px;
+        font-size: 12pt;
+    }
+
+        .form-group .controls i:hover {
+            color: #707A8A;
+        }
+
+        .form-group .controls i.fa-times-circle {
+            display: none;
+        }

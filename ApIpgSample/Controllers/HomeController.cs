@@ -26,6 +26,10 @@ namespace ApIpgSample.Controllers
         {
             return View();
         }
+        public IActionResult Headers()
+        {
+            return View(Request.Headers);
+        }
 
         [HttpPost]
         public async Task<IActionResult> Pay(PayViewModel data)

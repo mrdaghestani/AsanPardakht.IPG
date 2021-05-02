@@ -1,0 +1,23 @@
+﻿@model Microsoft.AspNetCore.Http.IHeaderDictionary
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="ltr">
+    <ul>
+        @foreach (var item in Model)
+        {
+            <li>
+                <span>@item.Key</span>
+                <ul>
+                    @foreach (var val in item.Value)
+                    {
+                        <li>
+                            <span>@val</span>
+                        </li>
+                    }
+                </ul>
+            </li>
+        }
+    </ul>
+</div>
