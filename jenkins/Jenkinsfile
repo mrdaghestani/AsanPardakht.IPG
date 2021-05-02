@@ -6,7 +6,7 @@ node {
     stage('Build Image') {
         withCredentials([string(credentialsId: 'nuget_apikey', variable: 'apiKey')]) {
             imageName = "ap_ipg_sample";
-            version = "1.${currentBuild.number}";
+            version = "1.0.${currentBuild.number}";
             app = docker.build("${imageName}:${version}", " --build-arg VERSION=${version} --build-arg APIKEY=${apiKey} .");
         }
     }

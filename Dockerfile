@@ -4,17 +4,11 @@ COPY . .
 
 ARG VERSION=1.0.0
 ARG APIKEY=APIKEY
-RUN dotnet restore && dotnet build -c Release
-
-RUN dotnet pack -c Release -p:PackageVersion=${VERSION} -o /app/build AsanPardakht.IPG
-RUN ls /app/build
-ARG VERSION=1.0.0
-ARG APIKEY=APIKEY
-RUN dotnet nuget push -k $APIKEY -s https://www.nuget.org/api/v2/package /app/build/AsanPardakht.IPG.${VERSION}.nupkg
-#    && dotnet pack -c Release -p:PackageVersion=${VERSION} -o /app/build AsanPardakht.IPG \
-#    && dotnet nuget push -k $APIKEY -s https://www.nuget.org/api/v2/package /app/build/AsanPardakht.IPG.${VERSION}.nupkg \
-#    && dotnet pack -c Release -p:PackageVersion=${VERSION} -o /app/build AsanPardakht.IPG.AspNetCore \
-#    && dotnet nuget push -k $APIKEY -s https://www.nuget.org/api/v2/package /app/build/AsanPardakht.IPG.AspNetCore.${VERSION}.nupkg
+RUN dotnet restore && dotnet build -c Release \
+    && dotnet pack -c Release -p:PackageVersion=${VERSION} -o /app/build AsanPardakht.IPG \
+    && dotnet nuget push -k $APIKEY -s https://www.nuget.org/api/v2/package /app/build/AsanPardakht.IPG.${VERSION}.nupkg \
+    && dotnet pack -c Release -p:PackageVersion=${VERSION} -o /app/build AsanPardakht.IPG.AspNetCore \
+    && dotnet nuget push -k $APIKEY -s https://www.nuget.org/api/v2/package /app/build/AsanPardakht.IPG.AspNetCore.${VERSION}.nupkg
 
 FROM build AS publish
 RUN dotnet publish -c Release -o /app/publish
