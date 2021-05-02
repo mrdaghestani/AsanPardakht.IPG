@@ -12,6 +12,9 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "packages", "packages", "{01390491-FFD0-4500-AD86-2DBCE7034739}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{29A0E514-970F-4360-B042-DF2F54962023}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "cicd", "cicd", "{8B1DD792-0CD4-45E2-B378-A1753AD9A4FE}"
 	ProjectSection(SolutionItems) = preProject
