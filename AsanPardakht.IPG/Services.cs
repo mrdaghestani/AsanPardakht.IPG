@@ -154,7 +154,7 @@ namespace AsanPardakht.IPG
                 case 200:
                     return new ReverseResponse();
                 case 472:
-                    await _client.TryExecute<BlankResponse>(HttpMethod.Post, "/v1/Cancel", data);
+                    await _client.Execute<BlankResponse>(HttpMethod.Post, "/v1/Cancel", data);
                     return new ReverseResponse();
                 case 477:
                     throw new InvalidIdentityException(response.responseStatusCode);
