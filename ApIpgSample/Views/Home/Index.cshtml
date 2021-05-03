@@ -131,7 +131,7 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-xs-12">
+                        <div class="col-xs-12 message-plcs">
                             @if (Model.VerifyResult == null)
                             {
                                 <div class="alert alert-info">
@@ -145,10 +145,10 @@
                                 </div>
                                 <div class="row">
                                     <div class="col-xs-6">
-                                        <a class="btn btn-success btn-block">Settle Transaction</a>
+                                        <a href="/Home/Settle" class="btn btn-success btn-block ajax-link" data-merchant-configuration-id="@(Model.TranResult.MerchantConfigurationId)" data-pay-gate-tran-id="@(Model.TranResult.PayGateTranID)">Settle Transaction</a>
                                     </div>
                                     <div class="col-xs-6">
-                                        <a class="btn btn-danger btn-block">Reverse Transaction</a>
+                                        <a href="/Home/Reverse" class="btn btn-danger btn-block ajax-link" data-merchant-configuration-id="@(Model.TranResult.MerchantConfigurationId)" data-pay-gate-tran-id="@(Model.TranResult.PayGateTranID)">Reverse Transaction</a>
                                     </div>
                                 </div>
                             }
@@ -312,6 +312,53 @@
                             input.val(value);
                             input.prop('readonly', value && true);
                         }
+                    });
+                });
+
+                $('a.ajax-link').each(function () {
+                    var link = $(this);
+                    var msgPlcs = $('.message-plcs');
+                    link.click(function (e) {
+                        e.preventDefault();
+
+                        var link = $(this);
+
+                        if (link.data('loading'))
+                            return;
+                        link.data('loading', true);
+
+                        var linkData = link.data();
+                        var postData = {};
+                        for (var name in linkData) {
+                            var inputName = name.replace(/\b[a-z]/g, function (letter) {
+                                return letter.toUpperCase();
+                            });
+                            postData[inputName] = linkData[name];
+                        }
+
+                        $.ajax({
+                            url: link.attr('href'),
+                            type: 'post',
+                            data: JSON.stringify(postData),
+                            contentType: 'application/json',
+                            success: function (data) {
+
+                                if (data.isSuccess) {
+                                    msgPlcs.append($('<div />').addClass('alert alert-success').append(data.message));
+                                } else if (data.error) {
+                                    msgPlcs.append($('<div />').addClass('alert alert-danger').append(data.error));
+                                } else {
+                                    msgPlcs.append($('<div />').addClass('alert alert-danger').append('خطای نامشخص'));
+                                }
+                            },
+                            error: function () {
+                                console.log(arguments);
+                                msgPlcs.append($('<div />').addClass('alert alert-danger').append('خطای نامشخص'));
+                            },
+                            complete: function () {
+                                link.data('loading', false);
+                            }
+                        });
                     });
                 });
             }

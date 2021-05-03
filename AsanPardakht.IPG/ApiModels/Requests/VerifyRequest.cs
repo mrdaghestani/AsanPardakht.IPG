@@ -7,6 +7,9 @@ namespace AsanPardakht.IPG.ApiModels.Requests
 {
     public class VerifyRequest : TransactionIdentity
     {
-
+        public VerifyRequest(int merchantConfigurationId, ulong payGateTranId)
+            : base(merchantConfigurationId, payGateTranId)
+        {
+        }
     }
 }

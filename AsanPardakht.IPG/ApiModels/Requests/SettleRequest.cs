@@ -7,5 +7,9 @@ namespace AsanPardakht.IPG.ApiModels.Requests
 {
     public class SettleRequest : TransactionIdentity
     {
+        public SettleRequest(int merchantConfigurationId, ulong payGateTranId)
+            : base(merchantConfigurationId, payGateTranId)
+        {
+        }
     }
 }

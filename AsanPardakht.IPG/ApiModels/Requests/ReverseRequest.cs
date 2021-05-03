@@ -7,5 +7,9 @@ namespace AsanPardakht.IPG.ApiModels.Requests
 {
     public class ReverseRequest : TransactionIdentity
     {
+        public ReverseRequest(int merchantConfigurationId, ulong payGateTranId)
+            : base(merchantConfigurationId, payGateTranId)
+        {
+        }
     }
 }

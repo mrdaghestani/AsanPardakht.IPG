@@ -1,14 +1,11 @@
 ﻿using ApIpgSample.Models;
-using AsanPardakht.IPG;
 using AsanPardakht.IPG.Abstractions;
-using AsanPardakht.IPG.Exceptions;
+using AsanPardakht.IPG.ApiModels.Requests;
 using AsanPardakht.IPG.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -133,6 +130,32 @@ namespace ApIpgSample.Controllers
                 {
                     Message = exc.Message
                 });
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> Settle([FromBody] TransactionIdentityViewModel data)
+        {
+            try
+            {
+                var tokenModel = await _services.Settle(new SettleRequest(data.MerchantConfigurationId, data.PayGateTranId));
+                return Json(new { isSuccess = true, message = "با موفقیت ستل شد" });
+            }
+            catch (Exception exc)
+            {
+                return Json(new { isSuccess = false, error = exc.Message });
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> Reverse([FromBody] TransactionIdentityViewModel data)
+        {
+            try
+            {
+                var tokenModel = await _services.Reverse(new ReverseRequest(data.MerchantConfigurationId, data.PayGateTranId));
+                return Json(new { isSuccess = true, message = "با موفقیت ریورس شد" });
+            }
+            catch (Exception exc)
+            {
+                return Json(new { isSuccess = false, error = exc.Message });
             }
         }
 

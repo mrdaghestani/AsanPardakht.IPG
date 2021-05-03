@@ -85,11 +85,7 @@ namespace AsanPardakht.IPG
         }
         public Task<VerifyResponse> Verify(ulong payGateTranId)
         {
-            var request = new VerifyRequest
-            {
-                MerchantConfigurationId = _config.MerchantConfigurationId,
-                PayGateTranId = payGateTranId
-            };
+            var request = new VerifyRequest(_config.MerchantConfigurationId, payGateTranId);
             return Verify(request);
         }
 
@@ -100,6 +96,7 @@ namespace AsanPardakht.IPG
             switch (response.responseStatusCode)
             {
                 case 200:
+                    response.result.MerchantConfigurationId = _config.MerchantConfigurationId;
                     return response.result;
                 case 472:
                     throw new PaymentTransactionNotFoundException(response.responseStatusCode);
@@ -144,11 +141,7 @@ namespace AsanPardakht.IPG
 
         public Task<SettleResponse> Settle(ulong payGateTranId)
         {
-            var request = new SettleRequest
-            {
-                MerchantConfigurationId = _config.MerchantConfigurationId,
-                PayGateTranId = payGateTranId
-            };
+            var request = new SettleRequest(_config.MerchantConfigurationId, payGateTranId);
             return Settle(request);
         }
 
@@ -160,14 +153,14 @@ namespace AsanPardakht.IPG
             {
                 case 200:
                     return new ReverseResponse();
+                case 472:
+                    await _client.TryExecute<BlankResponse>(HttpMethod.Post, "/v1/Cancel", data);
+                    return new ReverseResponse();
                 case 477:
                     throw new InvalidIdentityException(response.responseStatusCode);
                 case 572:
                 case 471:
                     throw new PaymentTransactionNotFoundException(response.responseStatusCode);
-                case 472:
-                    await _client.TryExecute<BlankResponse>(HttpMethod.Post, "/v1/Cancel", data);
-                    return await Reverse(data);
                 case 474:
                 case 476:
                     throw new InvalidTransactionStateException(response.responseStatusCode);
@@ -181,11 +174,7 @@ namespace AsanPardakht.IPG
 
         public Task<ReverseResponse> Reverse(ulong payGateTranId)
         {
-            var request = new ReverseRequest
-            {
-                MerchantConfigurationId = _config.MerchantConfigurationId,
-                PayGateTranId = payGateTranId
-            };
+            var request = new ReverseRequest(_config.MerchantConfigurationId, payGateTranId);
             return Reverse(request);
         }
 

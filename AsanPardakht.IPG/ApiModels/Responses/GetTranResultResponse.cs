@@ -38,6 +38,7 @@ namespace AsanPardakht.IPG.ApiModels.Responses
                 return new[] { "500", "600" }.Contains(ServiceStatusCode?.Trim());
             }
         }
+        public int MerchantConfigurationId { get; set; }
 
         #region Sub Service Result Info
         /// <summary>
