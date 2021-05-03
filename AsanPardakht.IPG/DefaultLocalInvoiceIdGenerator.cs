@@ -5,13 +5,13 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace ApIpgSample
+namespace AsanPardakht.IPG
 {
     /// <summary>
     /// this LocalInvoiceIdGenerator is not useful in production invironment.
     /// you need to implement one with your own database and get a new id from the database
     /// </summary>
-    public class LocalInvoiceIdGenerator : ILocalInvoiceIdGenerator
+    public class DefaultLocalInvoiceIdGenerator : ILocalInvoiceIdGenerator
     {
         private static object _lock = new object();
         public async Task<ulong> GetNext()

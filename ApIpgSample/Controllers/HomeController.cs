@@ -36,11 +36,6 @@ namespace ApIpgSample.Controllers
             model.Time = await _services.GetTime();
             return View(model);
         }
-        public IActionResult Headers()
-        {
-            return View(Request.Headers);
-        }
-
         private string GenerateCallbackUrl(HttpRequest request)
         {
             var scheme = request.Headers["X-Forwarded-Proto"].ToString();
@@ -49,6 +44,37 @@ namespace ApIpgSample.Controllers
             var callbackUrl = $"{scheme}://{request.Host}/?localInvoiceId={{0}}";
             return callbackUrl;
         }
+        private async Task<CallbackViewModel> Callback(ulong localInvoiceId)
+        {
+            try
+            {
+                var tranResult = await _services.GetTranResult(localInvoiceId);
+
+                var model = new CallbackViewModel
+                {
+                    TranResult = tranResult,
+                };
+
+                if (tranResult.ServiceType == ServiceType.Buy)
+                {
+                    model.VerifyResult = await _services.Verify(tranResult.PayGateTranID);
+                }
+
+                return model;
+            }
+            catch (Exception exc)
+            {
+                return new CallbackViewModel
+                {
+                    ErrorMessage = exc.Message
+                };
+            }
+        }
+        public IActionResult Headers()
+        {
+            return View(Request.Headers);
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> Pay(PayViewModel data)
@@ -86,33 +112,30 @@ namespace ApIpgSample.Controllers
                 });
             }
         }
-
-        private async Task<CallbackViewModel> Callback(ulong localInvoiceId)
+        [HttpPost]
+        public async Task<IActionResult> PayBolton(PayBoltonViewModel data)
         {
             try
             {
-                var tranResult = await _services.GetTranResult(localInvoiceId);
-
-                var model = new CallbackViewModel
-                {
-                    TranResult = tranResult,
-                };
-
-                if (tranResult.ServiceType == ServiceType.Buy)
-                {
-                    model.VerifyResult = await _services.Verify(tranResult.PayGateTranID);
-                }
-
-                return model;
+                var telOperator = TelecomOperator.GetList().SingleOrDefault(x => x.Id == data.TelecomOperatorId);
+                if (telOperator == null)
+                    throw new Exception("TelecomOperator not found");
+                var simType = SimType.GetList().SingleOrDefault(x => x.Id == data.SimTypeId);
+                if (simType == null)
+                    throw new Exception("SimType not found");
+                var boltonData = new TelecomeBoltonData(data.DestinationMobile, telOperator, simType, data.ProductId);
+                var tokenModel = await _services.GenerateTelecomeBoltonToken(data.Amount, GenerateCallbackUrl(Request), boltonData, data.Mobile);
+                return View("Pay", tokenModel);
             }
             catch (Exception exc)
             {
-                return new CallbackViewModel
+                return View("Error", new ErrorViewModel
                 {
-                    ErrorMessage = exc.Message
-                };
+                    Message = exc.Message
+                });
             }
         }
+
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

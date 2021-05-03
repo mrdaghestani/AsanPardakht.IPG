@@ -90,7 +90,16 @@ namespace AsanPardakht.IPG.ApiModels.Requests
         {
             AddAdditionalData(nameof(chargeData.DestinationMobile), chargeData.DestinationMobile);
             AddAdditionalData(nameof(chargeData.ProductId), chargeData.ProductId);
+
             return SetServiceType(chargeData.TelecomOperator.ChargeServiceType);
+        }
+        public GenerateTokenRequest SetTelecomeCharge(TelecomeBoltonData boltonData)
+        {
+            AddAdditionalData(nameof(boltonData.DestinationMobile), boltonData.DestinationMobile);
+            AddAdditionalData(nameof(boltonData.ProductId), boltonData.ProductId);
+            AddAdditionalData(nameof(boltonData.SimTypeId), boltonData.SimTypeId);
+
+            return SetServiceType(boltonData.TelecomOperator.BoltonServiceType);
         }
     }
 }

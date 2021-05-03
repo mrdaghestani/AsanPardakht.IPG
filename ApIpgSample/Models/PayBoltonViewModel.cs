@@ -5,10 +5,8 @@ using System.Threading.Tasks;
 
 namespace ApIpgSample.Models
 {
-    public class PayChargeViewModel : PayViewModel
+    public class PayBoltonViewModel : PayChargeViewModel
     {
-        public int ProductId { get; set; }
-        public string DestinationMobile { get; set; }
-        public int TelecomOperatorId { get; set; }
+        public int SimTypeId { get; set; }
     }
 }

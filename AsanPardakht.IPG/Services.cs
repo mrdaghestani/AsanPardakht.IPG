@@ -22,7 +22,7 @@ namespace AsanPardakht.IPG
         {
             _config = config;
             _client = client;
-            _localInvoiceIdGenerator = localInvoiceIdGenerator;
+            _localInvoiceIdGenerator = localInvoiceIdGenerator ?? new DefaultLocalInvoiceIdGenerator();
         }
 
         private Task<ulong> GetNextLocalInvoiceId()
@@ -209,6 +209,18 @@ namespace AsanPardakht.IPG
 
             var request = new GenerateTokenRequest(_config.MerchantConfigurationId, await _localInvoiceIdGenerator.GetNext(), amountInRials, callbackURL)
                 .SetTelecomeCharge(chargeData);
+            if (!string.IsNullOrWhiteSpace(mobileNumber))
+                request.SetMobileNumber(mobileNumber);
+            return await GenerateToken(request);
+        }
+
+        public async Task<GenerateTokenResponse> GenerateTelecomeBoltonToken(ulong amountInRials, string callbackURL, TelecomeBoltonData boltonData, string mobileNumber = null)
+        {
+            if (boltonData == null)
+                throw new ArgumentNullException(nameof(boltonData));
+
+            var request = new GenerateTokenRequest(_config.MerchantConfigurationId, await _localInvoiceIdGenerator.GetNext(), amountInRials, callbackURL)
+                .SetTelecomeCharge(boltonData);
             if (!string.IsNullOrWhiteSpace(mobileNumber))
                 request.SetMobileNumber(mobileNumber);
             return await GenerateToken(request);

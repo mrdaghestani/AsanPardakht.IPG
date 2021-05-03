@@ -9,7 +9,7 @@ namespace AsanPardakht.IPG.Models
         public static TelecomOperator Mci = new TelecomOperator(1, "همراه اول", ServiceType.TelecomChargeMci, ServiceType.TelecomBoltonMci);
         public static TelecomOperator Irancell = new TelecomOperator(2, "ایرانسل", ServiceType.TelecomChargeIrancell, ServiceType.TelecomBoltonIrancell);
         public static TelecomOperator Rightel = new TelecomOperator(4, "رایتل", ServiceType.TelecomChargeRightel, ServiceType.TelecomBoltonRightel);
-        public static TelecomOperator Aptel = new TelecomOperator(5, "آپتل", ServiceType.TelecomChargeAzartel, ServiceType.TelecomBoltonAptel);
+        public static TelecomOperator Aptel = new TelecomOperator(5, "آپتل", default, ServiceType.TelecomBoltonAptel);
         public static TelecomOperator Azartel = new TelecomOperator(6, "آذرتل", ServiceType.TelecomChargeAzartel, ServiceType.TelecomBoltonAzartel);
 
         public static IEnumerable<TelecomOperator> GetList()

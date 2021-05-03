@@ -214,7 +214,60 @@
                                 <option data-telecom-operator-id="2" data-product-id="510" data-amount="21800">2,000 توماني</option>
                                 <option data-telecom-operator-id="2" data-product-id="511" data-amount="54500">5,000 توماني</option>
                             </optgroup>
+                            <optgroup label="رایتل">
+                                <option data-telecom-operator-id="4" data-product-id="521" data-amount="20000">2,000 توماني</option>
+                                <option data-telecom-operator-id="4" data-product-id="522" data-amount="50000">5,000 توماني</option>
+                                <option data-telecom-operator-id="4" data-product-id="523" data-amount="100000">10,000 توماني</option>
+                            </optgroup>
                         </select>
+                    </div>
+                    <div class="form-group">
+                        <label>کد اپراتور:</label>
+                        <input type="text" class="form-control ltr" placeholder="کد اپراتور" name="TelecomOperatorId">
+                    </div>
+                    <div class="form-group">
+                        <label>کد شارژ:</label>
+                        <input type="text" class="form-control ltr" placeholder="کد شارژ" name="ProductId">
+                    </div>
+                    <div class="form-group">
+                        <label>مبلغ:</label>
+                        <input type="text" class="form-control ltr" placeholder="مبلغ به ریال" name="Amount">
+                    </div>
+                    <div class="form-group">
+                        <label>موبایل:</label>
+                        <input type="text" class="form-control ltr" placeholder="شماره موبایل" name="Mobile">
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">پرداخت</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-3 col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <span>خرید بسته</span>
+            </div>
+            <div class="panel-body">
+                <form asp-action="PayBolton">
+                    <div class="form-group">
+                        <label>موبایل شارژ شونده:</label>
+                        <input type="text" class="form-control ltr" placeholder="شماره موبایل شارژ" name="DestinationMobile">
+                    </div>
+                    <div class="form-group">
+                        <label>نوع شارژ:</label>
+                        <select class="form-control">
+                            <option data-telecom-operator-id="" data-product-id="" data-amount="">----</option>
+                            <optgroup label="ایرانسل - سیمکارت اعتباری">
+                                <option data-telecom-operator-id="2" data-product-id="456" data-amount="17440" data-sim-type-id="1">شصت مگ 1,600ت</option>
+                            </optgroup>
+                            <optgroup label="همراه اول - سیمکارت اعتباری">
+                                <option data-telecom-operator-id="1" data-product-id="1001027" data-amount="17440" data-sim-type-id="1">1 روزه  60مگ</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>نوع سیمکارت:</label>
+                        <input type="text" class="form-control ltr" placeholder="نوع سیمکارت" name="SimTypeId">
                     </div>
                     <div class="form-group">
                         <label>کد اپراتور:</label>
