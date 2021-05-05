@@ -48,7 +48,6 @@
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgements">Acknowledgements</a></li>
   </ol>
 </details>
 
@@ -57,12 +56,8 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](https://ap_ipg_sample.itsbeta.ir/)
-
 The goal of this project is to make it easier to work with the AsanPardakht internet payment gateway (IPG).
 This project includes packages that can be installed to make it easier to implement the internet payment gateway.
-
-A list of commonly used resources that I find helpful are listed in the acknowledgements.
 
 ### Built With
 
@@ -82,14 +77,17 @@ To get a local copy up and running follow these simple example steps.
 ### Installation
 
 1. Register your merchant & get a MerchantConfiguraion with following [AsanPardakht website](https://asanpardakht.ir/ipg) instruction
+
 2. Install latest version of `AsanPardakht.IPG` package from [nuget](https://www.nuget.org/packages/AsanPardakht.IPG/)
    ```
    Install-Package AsanPardakht.IPG
    ```
+
 3. If you are using asp.net core just install latest version of `AsanPardakht.IPG.AspNetCore` package from [nuget](https://www.nuget.org/packages/AsanPardakht.IPG.AspNetCore/)
    ```
    Install-Package AsanPardakht.IPG.AspNetCore
    ```
+
 4. Enter your MerchantConfiguraion in `appsettings.json`
    ```JSON
    {
@@ -97,9 +95,10 @@ To get a local copy up and running follow these simple example steps.
         "MerchantUser": "myUsername",
         "MerchantPassword": "myPassword",
         "MerchantConfigurationId": 1234
-      },...
+      }
    }
    ```
+
 5. Call `AddAsanPardakhtIpg` method with an instance of `IConfiguration` to register default services in `Startup.cs` file
    ```csharp
    public IConfiguration Configuration { get; }
@@ -111,15 +110,59 @@ To get a local copy up and running follow these simple example steps.
        ,...
    }
    ```
+
 6. If you need your own implementation of `AsanPardakht.IPG.Abstractions.ILocalInvoiceIdGenerator` register it as a service.
+
 7. Now you can inject `AsanPardakht.IPG.Abstractions.IServices` in your classes.
 
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+1. First you need to get a `Payment RefId (Token)` from `GenerateToken` method. You can use one of the following methods:
+    a. Use `IServices.GenerateBuyToken` method to get a token for a simple buy payment.
+    b. Use `IServices.GenerateBillToken` method to get a token for paying an existing _Bill_.
+    c. Use `IServices.GenerateTelecomeChargeToken` method to get a token for buying a _Telecom Sim Charge_.
+    d. Use `IServices.GenerateTelecomeBoltonToken` method to get a token for buying a _Telecom Package_.
+    e. Use `IServices.GenerateToken` method to get a token for a custom implementation.
+    f. For more information about `Token` method refer to the [Online Swagger Doc](https://ipgrest.asanpardakht.ir/index.html).
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+2. After getting a `RefId` from `Token` method, send user to the _Payment Gateway_ using `POST HTTP METHOD`
+    a. You can use the following _javascript_ code to send user to the _Payment Gateway_
+        ```js
+        function postRefId(gatewayUrl, refId, mobileap) {
+            var form = document.createElement("form");
+            form.setAttribute("method", "POST");
+            form.setAttribute("action", gatewayUrl);
+            form.setAttribute("target", "_self");
+
+            var refIdField = document.createElement("input");
+            refIdField.setAttribute("name", "RefId");
+            refIdField.setAttribute("value", refId);
+            form.appendChild(refIdField);
+
+            if (mobileap) {
+                var mobileField = document.createElement("input");
+                mobileField.setAttribute("name", "Mobileap");
+                mobileField.setAttribute("value", mobileap);
+                form.appendChild(mobileField);
+            }
+
+            document.body.appendChild(form);
+            form.submit();
+            document.body.removeChild(form);
+        }
+        postRefId(tokenResponse.GatewayUrl, tokenResponse.RefId, tokenResponse.Mobileap);
+        ```
+
+3. After payment your _callback_ url will called with some parameters, you can ignore those parameters and use `IServices.GetTranResult` method.
+
+4. After receiving successful result from `IServices.GetTranResult` method, you have to _verify_ the payment using `IServices.Verify` method.
+
+5. Now it's time to do whatever you like with your site order, for example check the _payment amount_ with _order amount_ and change its status to _Saccessful Payment_.
+
+6. If your operations were successful call `IServices.Settle` method to complete the payment process else call `IServices.Reverse` method to cancel payment and return money back to user.
+
+_For exploring a working example, please refer to the [HomeController](https://github.com/mrdaghestani/AsanPardakht.IPG/blob/master/ApIpgSample/Controllers/HomeController.cs) file_
 
 
 
@@ -133,7 +176,7 @@ See the [open issues](https://github.com/othneildrew/Best-README-Template/issues
 <!-- CONTRIBUTING -->
 ## Contributing
 
-Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+Contributions are what make the open source community such an amazing place to be learn, inspire, and create. Any contributions you make are **greatly appreciated**. :smirk:
 
 1. Fork the Project
 2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
@@ -153,42 +196,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 <!-- CONTACT -->
 ## Contact
 
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
+MohammadReza Daghestani - [@mrdaghestani](https://twitter.com/mrdaghestani) - MRDaghestani@gmail.com
 
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
+Project Link: [https://github.com/mrdaghestani/AsanPardakht.IPG](https://github.com/mrdaghestani/AsanPardakht.IPG)
 
-
-
-<!-- ACKNOWLEDGEMENTS -->
-## Acknowledgements
-* [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-* [Img Shields](https://shields.io)
-* [Choose an Open Source License](https://choosealicense.com)
-* [GitHub Pages](https://pages.github.com)
-* [Animate.css](https://daneden.github.io/animate.css)
-* [Loaders.css](https://connoratherton.com/loaders)
-* [Slick Carousel](https://kenwheeler.github.io/slick)
-* [Smooth Scroll](https://github.com/cferdinandi/smooth-scroll)
-* [Sticky Kit](http://leafo.net/sticky-kit)
-* [JVectorMap](http://jvectormap.com)
-* [Font Awesome](https://fontawesome.com)
-
-
-
-
-
-<!-- MARKDOWN LINKS & IMAGES -->
-<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
-[contributors-shield]: https://img.shields.io/github/contributors/othneildrew/Best-README-Template.svg?style=for-the-badge
-[contributors-url]: https://github.com/othneildrew/Best-README-Template/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/othneildrew/Best-README-Template.svg?style=for-the-badge
-[forks-url]: https://github.com/othneildrew/Best-README-Template/network/members
-[stars-shield]: https://img.shields.io/github/stars/othneildrew/Best-README-Template.svg?style=for-the-badge
-[stars-url]: https://github.com/othneildrew/Best-README-Template/stargazers
-[issues-shield]: https://img.shields.io/github/issues/othneildrew/Best-README-Template.svg?style=for-the-badge
-[issues-url]: https://github.com/othneildrew/Best-README-Template/issues
-[license-shield]: https://img.shields.io/github/license/othneildrew/Best-README-Template.svg?style=for-the-badge
-[license-url]: https://github.com/othneildrew/Best-README-Template/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/othneildrew
-[product-screenshot]: images/screenshot.png
