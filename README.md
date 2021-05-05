@@ -48,6 +48,7 @@
     <li><a href="#contributing">Contributing</a></li>
     <li><a href="#license">License</a></li>
     <li><a href="#contact">Contact</a></li>
+    <li><a href="#acknowledgements">Acknowledgements</a></li>
   </ol>
 </details>
 
@@ -58,6 +59,8 @@
 
 The goal of this project is to make it easier to work with the AsanPardakht internet payment gateway (IPG).
 This project includes packages that can be installed to make it easier to implement the internet payment gateway.
+
+A list of commonly used resources that I find helpful are listed in the acknowledgements.
 
 ### Built With
 
@@ -169,7 +172,7 @@ _For exploring a working example, please refer to the [HomeController](https://g
 <!-- ROADMAP -->
 ## Roadmap
 
-See the [open issues](https://github.com/othneildrew/Best-README-Template/issues) for a list of proposed features (and known issues).
+See the [open issues](https://github.com/mrdaghestani/AsanPardakht.IPG/issues) for a list of proposed features (and known issues).
 
 
 
@@ -200,3 +203,19 @@ MohammadReza Daghestani - [@mrdaghestani](https://twitter.com/mrdaghestani) - MR
 
 Project Link: [https://github.com/mrdaghestani/AsanPardakht.IPG](https://github.com/mrdaghestani/AsanPardakht.IPG)
 
+
+
+
+
+[contributors-shield]: https://img.shields.io/github/contributors/mrdaghestani/AsanPardakht.IPG.svg?style=for-the-badge
+[forks-shield]: https://img.shields.io/github/forks/mrdaghestani/AsanPardakht.IPG.svg?style=for-the-badge
+[stars-shield]: https://img.shields.io/github/stars/mrdaghestani/AsanPardakht.IPG.svg?style=for-the-badge
+[issues-shield]: https://img.shields.io/github/issues/mrdaghestani/AsanPardakht.IPG.svg?style=for-the-badge
+[license-shield]: https://img.shields.io/github/license/mrdaghestani/AsanPardakht.IPG.svg?style=for-the-badge
+[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
+[contributors-url]: https://github.com/mrdaghestani/AsanPardakht.IPG/graphs/contributors
+[forks-url]: https://github.com/mrdaghestani/AsanPardakht.IPG/network/members
+[stars-url]: https://github.com/mrdaghestani/AsanPardakht.IPG/stargazers
+[issues-url]: https://github.com/mrdaghestani/AsanPardakht.IPG/issues
+[license-url]: https://github.com/mrdaghestani/AsanPardakht.IPG/blob/master/LICENSE.txt
+[linkedin-url]: https://www.linkedin.com/in/mrdaghestani/
