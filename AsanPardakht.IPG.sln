@@ -3,16 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.31112.23
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsanPardakht.IPG", "AsanPardakht.IPG\AsanPardakht.IPG.csproj", "{3B7487DE-BF9B-454D-9A1B-733E9A8CC234}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AsanPardakht.IPG", "AsanPardakht.IPG\AsanPardakht.IPG.csproj", "{3B7487DE-BF9B-454D-9A1B-733E9A8CC234}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AsanPardakht.IPG.AspNetCore", "AsanPardakht.IPG.AspNetCore\AsanPardakht.IPG.AspNetCore.csproj", "{7D2A040E-664F-4E21-82F3-09CB8A902427}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AsanPardakht.IPG.AspNetCore", "AsanPardakht.IPG.AspNetCore\AsanPardakht.IPG.AspNetCore.csproj", "{7D2A040E-664F-4E21-82F3-09CB8A902427}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApIpgSample", "ApIpgSample\ApIpgSample.csproj", "{46B5352B-48CD-412D-AAC3-982F1A675F6D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ApIpgSample", "ApIpgSample\ApIpgSample.csproj", "{46B5352B-48CD-412D-AAC3-982F1A675F6D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "packages", "packages", "{01390491-FFD0-4500-AD86-2DBCE7034739}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "samples", "samples", "{29A0E514-970F-4360-B042-DF2F54962023}"
 	ProjectSection(SolutionItems) = preProject
+		LICENSE.txt = LICENSE.txt
 		README.md = README.md
 	EndProjectSection
 EndProject
