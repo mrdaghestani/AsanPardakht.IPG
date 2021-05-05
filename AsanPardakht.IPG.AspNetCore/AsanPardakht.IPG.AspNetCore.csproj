@@ -6,6 +6,10 @@
 
 	<PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
 		<GenerateDocumentationFile>true</GenerateDocumentationFile>
+		<RepositoryUrl>https://github.com/mrdaghestani/AsanPardakht.IPG</RepositoryUrl>
+		<Authors>MRDaghestani</Authors>
+		<Description>Easy to use AsanPardakht Internet Payment Gateway (IPG).</Description>
+		<IconUrl>https://github.com/mrdaghestani/AsanPardakht.IPG/raw/master/images/aplogo.png</IconUrl>
 	</PropertyGroup>
 
 	<ItemGroup>
