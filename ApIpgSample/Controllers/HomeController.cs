@@ -52,11 +52,6 @@ namespace ApIpgSample.Controllers
                     TranResult = tranResult,
                 };
 
-                if (tranResult.ServiceType == ServiceType.Buy)
-                {
-                    model.VerifyResult = await _services.Verify(tranResult.PayGateTranID);
-                }
-
                 return model;
             }
             catch (Exception exc)
@@ -78,7 +73,7 @@ namespace ApIpgSample.Controllers
         {
             try
             {
-                var tokenModel = await _services.GenerateBuyToken(data.Amount, GenerateCallbackUrl(Request), data.Mobile);
+                var tokenModel = await _services.GenerateBuyToken(data.Amount, GenerateCallbackUrl(Request), data.PaymentId, data.Mobile);
                 return View(tokenModel);
             }
             catch (Exception exc)
@@ -133,6 +128,67 @@ namespace ApIpgSample.Controllers
             }
         }
         [HttpPost]
+        public async Task<IActionResult> PayBill(PayBillViewModel data)
+        {
+            try
+            {
+                var billData = new BillData(data.BillId, data.PayId, data.PhoneNumber);
+                var tokenModel = await _services.GenerateBillToken(data.Amount, GenerateCallbackUrl(Request), billData, data.Mobile);
+                return View("Pay", tokenModel);
+            }
+            catch (Exception exc)
+            {
+                return View("Error", new ErrorViewModel
+                {
+                    Message = exc.Message
+                });
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> PayCustom(PayCustomViewModel data)
+        {
+            try
+            {
+                var config = data.Config;
+                var client = new AsanPardakht.IPG.Client(config);
+                var service = new AsanPardakht.IPG.Services(client, config);
+                var localInvoiceIdGenerator = new AsanPardakht.IPG.DefaultLocalInvoiceIdGenerator();
+                var id = await localInvoiceIdGenerator.GetNext();
+
+                var tokenRequest = new GenerateTokenRequest(config.MerchantConfigurationId, id, data.Amount, GenerateCallbackUrl(Request));
+
+                tokenRequest.SetPaymentId(data.PaymentId);
+                tokenRequest.SetServiceType(data.ServiceTypeId);
+                tokenRequest.SetMobileNumber(data.Mobile);
+
+                if (data.AdditionalData != null && data.AdditionalData.Any())
+                {
+                    foreach (var item in data.AdditionalData)
+                    {
+                        tokenRequest.AddAdditionalData(item.Key, item.Value);
+                    }
+                }
+
+                if (data.SettlementPortions != null && data.SettlementPortions.Any())
+                {
+                    foreach (var item in data.SettlementPortions)
+                    {
+                        tokenRequest.AddSettlementPortion(new SettlementPortion(item.IBAN, item.AmountInRials, item.PaymentId));
+                    }
+                }
+
+                var tokenModel = await _services.GenerateToken(tokenRequest);
+                return View("Pay", tokenModel);
+            }
+            catch (Exception exc)
+            {
+                return View("Error", new ErrorViewModel
+                {
+                    Message = exc.Message
+                });
+            }
+        }
+        [HttpPost]
         public async Task<IActionResult> Settle([FromBody] TransactionIdentityViewModel data)
         {
             try
@@ -152,6 +208,19 @@ namespace ApIpgSample.Controllers
             {
                 var tokenModel = await _services.Reverse(new ReverseRequest(data.MerchantConfigurationId, data.PayGateTranId));
                 return Json(new { isSuccess = true, message = "با موفقیت ریورس شد" });
+            }
+            catch (Exception exc)
+            {
+                return Json(new { isSuccess = false, error = exc.Message });
+            }
+        }
+        [HttpPost]
+        public async Task<IActionResult> Verify([FromBody] TransactionIdentityViewModel data)
+        {
+            try
+            {
+                var tokenModel = await _services.Verify(new VerifyRequest(data.MerchantConfigurationId, data.PayGateTranId));
+                return Json(new { isSuccess = true, message = "با موفقیت وریفای شد" });
             }
             catch (Exception exc)
             {

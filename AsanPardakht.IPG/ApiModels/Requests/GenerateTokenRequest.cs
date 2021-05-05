@@ -101,5 +101,13 @@ namespace AsanPardakht.IPG.ApiModels.Requests
 
             return SetServiceType(boltonData.TelecomOperator.BoltonServiceType);
         }
+        public GenerateTokenRequest SetBill(BillData billData)
+        {
+            AddAdditionalData(nameof(billData.BillId), billData.BillId);
+            AddAdditionalData(nameof(billData.PayId), billData.PayId);
+            AddAdditionalData(nameof(billData.PhoneNumber), billData.PhoneNumber);
+
+            return SetServiceType(ServiceType.Bill);
+        }
     }
 }

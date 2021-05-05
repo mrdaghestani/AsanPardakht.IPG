@@ -183,11 +183,13 @@ namespace AsanPardakht.IPG
             return _client.Execute<string>(HttpMethod.Get, "/v1/Time");
         }
 
-        public async Task<GenerateTokenResponse> GenerateBuyToken(ulong amountInRials, string callbackURL, string mobileNumber = null)
+        public async Task<GenerateTokenResponse> GenerateBuyToken(ulong amountInRials, string callbackURL, string paymentId = null, string mobileNumber = null)
         {
             var request = new GenerateTokenRequest(_config.MerchantConfigurationId, await _localInvoiceIdGenerator.GetNext(), amountInRials, callbackURL);
             if (!string.IsNullOrWhiteSpace(mobileNumber))
                 request.SetMobileNumber(mobileNumber);
+            if (!string.IsNullOrWhiteSpace(paymentId))
+                request.SetPaymentId(paymentId);
             return await GenerateToken(request);
         }
 
@@ -210,6 +212,18 @@ namespace AsanPardakht.IPG
 
             var request = new GenerateTokenRequest(_config.MerchantConfigurationId, await _localInvoiceIdGenerator.GetNext(), amountInRials, callbackURL)
                 .SetTelecomeCharge(boltonData);
+            if (!string.IsNullOrWhiteSpace(mobileNumber))
+                request.SetMobileNumber(mobileNumber);
+            return await GenerateToken(request);
+        }
+
+        public async Task<GenerateTokenResponse> GenerateBillToken(ulong amountInRials, string callbackURL, BillData billData, string mobileNumber = null)
+        {
+            if (billData == null)
+                throw new ArgumentNullException(nameof(billData));
+
+            var request = new GenerateTokenRequest(_config.MerchantConfigurationId, await _localInvoiceIdGenerator.GetNext(), amountInRials, callbackURL)
+                .SetBill(billData);
             if (!string.IsNullOrWhiteSpace(mobileNumber))
                 request.SetMobileNumber(mobileNumber);
             return await GenerateToken(request);

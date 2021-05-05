@@ -1,1 +1,14 @@
-﻿
+﻿.settlement-portion-place .panel.panel-default {
+    position: relative;
+}
+
+.settlement-portion-place .fas.fa-times-circle.text-danger {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 1;
+}
+
+.fas.fa-times-circle.text-danger {
+    cursor: pointer;
+}

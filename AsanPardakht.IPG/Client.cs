@@ -27,6 +27,12 @@ namespace AsanPardakht.IPG
             if (string.IsNullOrWhiteSpace(endpoint))
                 endpoint = DefaultRestEndpoint;
 
+            if (string.IsNullOrWhiteSpace(config.MerchantUser))
+                throw new Exception($"{nameof(config.MerchantUser)} is empty");
+
+            if (string.IsNullOrWhiteSpace(config.MerchantPassword))
+                throw new Exception($"{nameof(config.MerchantPassword)} is empty");
+
             _client.BaseAddress = new Uri(endpoint);
             _client.DefaultRequestHeaders.Accept.Clear();
             _client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

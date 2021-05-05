@@ -21,7 +21,7 @@
     }
     @if (Model.TranResult != null)
     {
-        <div class="col-lg-6 col-md-8">
+        <div class="col-xs-12">
             <div class="panel panel-default">
                 <div class="panel-heading">
                     <span>نتیجه تراکنش</span>
@@ -63,8 +63,6 @@
                             <h5 class="text-center">اطلاعات ارائه سرویس</h5>
                             @if (Model.TranResult.ServiceType == AsanPardakht.IPG.Models.ServiceType.Buy)
                             {
-
-
                                 <div class="alert alert-info">
                                     تراکنش خرید سرویس جانبی ندارد
                                 </div>
@@ -132,26 +130,19 @@
                     </div>
                     <div class="row">
                         <div class="col-xs-12 message-plcs">
-                            @if (Model.VerifyResult == null)
-                            {
-                                <div class="alert alert-info">
-                                    این تراکنش به صورت اتوماتیک وریفای میگردد
+                            <div class="row">
+                                <div class="col-xs-12">
+                                    <a href="/Home/Verify" class="btn btn-warning btn-block ajax-link" data-merchant-configuration-id="@(Model.TranResult.MerchantConfigurationId)" data-pay-gate-tran-id="@(Model.TranResult.PayGateTranID)">Verify Transaction</a>
                                 </div>
-                            }
-                            else
-                            {
-                                <div class="alert alert-success">
-                                    تراکنش با موفقیت وریفای شد
+                                <div class="col-xs-6">
+                                    <br />
+                                    <a href="/Home/Settle" class="btn btn-success btn-block ajax-link" data-merchant-configuration-id="@(Model.TranResult.MerchantConfigurationId)" data-pay-gate-tran-id="@(Model.TranResult.PayGateTranID)">Settle Transaction</a>
                                 </div>
-                                <div class="row">
-                                    <div class="col-xs-6">
-                                        <a href="/Home/Settle" class="btn btn-success btn-block ajax-link" data-merchant-configuration-id="@(Model.TranResult.MerchantConfigurationId)" data-pay-gate-tran-id="@(Model.TranResult.PayGateTranID)">Settle Transaction</a>
-                                    </div>
-                                    <div class="col-xs-6">
-                                        <a href="/Home/Reverse" class="btn btn-danger btn-block ajax-link" data-merchant-configuration-id="@(Model.TranResult.MerchantConfigurationId)" data-pay-gate-tran-id="@(Model.TranResult.PayGateTranID)">Reverse Transaction</a>
-                                    </div>
+                                <div class="col-xs-6">
+                                    <br />
+                                    <a href="/Home/Reverse" class="btn btn-danger btn-block ajax-link" data-merchant-configuration-id="@(Model.TranResult.MerchantConfigurationId)" data-pay-gate-tran-id="@(Model.TranResult.PayGateTranID)">Reverse Transaction</a>
                                 </div>
-                            }
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -159,7 +150,7 @@
         </div>
     }
 
-    <div class="col-lg-3 col-md-4">
+    <div class="col-xs-12">
         <div class="panel panel-default">
             <div class="panel-heading">
                 <span>پاسخ متد زمان سرور</span>
@@ -169,124 +160,321 @@
             </div>
         </div>
     </div>
-    <div class="col-lg-3 col-md-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <span>پرداخت</span>
+    <div class="col-xs-12">
+        <ul class="nav nav-tabs">
+            <li class="active">
+                <a href="#default" data-toggle="tab">پرداخت با پذیرنده در تنظیمات</a>
+            </li>
+            <li>
+                <a href="#custom" data-toggle="tab">پرداخت قابل تنظیم</a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div id="default" class="tab-pane fade in active">
+                <div class="row">
+                    <br /><br />
+                    <div class="col-lg-3 col-md-6 col-xs-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <span>پرداخت</span>
+                            </div>
+                            <div class="panel-body">
+                                <form asp-action="Pay">
+                                    <div class="form-group">
+                                        <label>مبلغ:</label>
+                                        <input type="text" class="form-control ltr" placeholder="مبلغ به ریال" name="Amount">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>موبایل:</label>
+                                        <input type="text" class="form-control ltr" placeholder="شماره موبایل" name="Mobile">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>شناسه پرداخت:</label>
+                                        <input type="text" class="form-control ltr" placeholder="شناسه پرداخت" name="PaymentId">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-block">پرداخت</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-xs-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <span>پرداخت قبض</span>
+                            </div>
+                            <div class="panel-body">
+                                <form asp-action="PayBill">
+                                    <div class="form-group">
+                                        <label>شناسه قبض:</label>
+                                        <input type="text" class="form-control ltr" placeholder="شناسه قبض" name="BillId">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>شناسه پرداخت:</label>
+                                        <input type="text" class="form-control ltr" placeholder="شناسه پرداخت" name="PayId">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>شماره تلفن ثابت:</label>
+                                        <input type="text" class="form-control ltr" placeholder="شماره تلفن ثابت" name="PhoneNumber">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>مبلغ:</label>
+                                        <input type="text" class="form-control ltr" placeholder="مبلغ به ریال" name="Amount">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>موبایل:</label>
+                                        <input type="text" class="form-control ltr" placeholder="شماره موبایل" name="Mobile">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-block">پرداخت</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-xs-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <span>خرید شارژ موبایل</span>
+                            </div>
+                            <div class="panel-body">
+                                <form asp-action="PayCharge">
+                                    <div class="form-group">
+                                        <label>موبایل شارژ شونده:</label>
+                                        <input type="text" class="form-control ltr" placeholder="شماره موبایل شارژ" name="DestinationMobile">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>نوع شارژ:</label>
+                                        <select class="form-control">
+                                            <option data-telecom-operator-id="" data-product-id="" data-amount="">----</option>
+                                            <optgroup label="همراه اول">
+                                                <option data-telecom-operator-id="1" data-product-id="514" data-amount="10000">1,000 توماني</option>
+                                                <option data-telecom-operator-id="1" data-product-id="515" data-amount="20000">2,000 توماني</option>
+                                                <option data-telecom-operator-id="1" data-product-id="516" data-amount="50000">5,000 توماني</option>
+                                            </optgroup>
+                                            <optgroup label="ایرانسل">
+                                                <option data-telecom-operator-id="2" data-product-id="509" data-amount="10900">1,000 توماني</option>
+                                                <option data-telecom-operator-id="2" data-product-id="510" data-amount="21800">2,000 توماني</option>
+                                                <option data-telecom-operator-id="2" data-product-id="511" data-amount="54500">5,000 توماني</option>
+                                            </optgroup>
+                                            <optgroup label="رایتل">
+                                                <option data-telecom-operator-id="4" data-product-id="521" data-amount="20000">2,000 توماني</option>
+                                                <option data-telecom-operator-id="4" data-product-id="522" data-amount="50000">5,000 توماني</option>
+                                                <option data-telecom-operator-id="4" data-product-id="523" data-amount="100000">10,000 توماني</option>
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>کد اپراتور:</label>
+                                        <input type="text" class="form-control ltr" placeholder="کد اپراتور" name="TelecomOperatorId">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>کد شارژ:</label>
+                                        <input type="text" class="form-control ltr" placeholder="کد شارژ" name="ProductId">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>مبلغ:</label>
+                                        <input type="text" class="form-control ltr" placeholder="مبلغ به ریال" name="Amount">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>موبایل:</label>
+                                        <input type="text" class="form-control ltr" placeholder="شماره موبایل" name="Mobile">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-block">پرداخت</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-3 col-md-6 col-xs-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <span>خرید بسته</span>
+                            </div>
+                            <div class="panel-body">
+                                <form asp-action="PayBolton">
+                                    <div class="form-group">
+                                        <label>موبایل شارژ شونده:</label>
+                                        <input type="text" class="form-control ltr" placeholder="شماره موبایل شارژ" name="DestinationMobile">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>نوع شارژ:</label>
+                                        <select class="form-control">
+                                            <option data-telecom-operator-id="" data-product-id="" data-amount="">----</option>
+                                            <optgroup label="ایرانسل - سیمکارت اعتباری">
+                                                <option data-telecom-operator-id="2" data-product-id="456" data-amount="17440" data-sim-type-id="1">شصت مگ 1,600ت</option>
+                                            </optgroup>
+                                            <optgroup label="همراه اول - سیمکارت اعتباری">
+                                                <option data-telecom-operator-id="1" data-product-id="1001027" data-amount="17440" data-sim-type-id="1">1 روزه  60مگ</option>
+                                            </optgroup>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>نوع سیمکارت:</label>
+                                        <input type="text" class="form-control ltr" placeholder="نوع سیمکارت" name="SimTypeId">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>کد اپراتور:</label>
+                                        <input type="text" class="form-control ltr" placeholder="کد اپراتور" name="TelecomOperatorId">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>کد شارژ:</label>
+                                        <input type="text" class="form-control ltr" placeholder="کد شارژ" name="ProductId">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>مبلغ:</label>
+                                        <input type="text" class="form-control ltr" placeholder="مبلغ به ریال" name="Amount">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>موبایل:</label>
+                                        <input type="text" class="form-control ltr" placeholder="شماره موبایل" name="Mobile">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-block">پرداخت</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="panel-body">
-                <form asp-action="Pay">
-                    <div class="form-group">
-                        <label>مبلغ:</label>
-                        <input type="text" class="form-control ltr" placeholder="مبلغ به ریال" name="Amount">
+            <div id="custom" class="tab-pane fade">
+                <div class="row">
+                    <br /><br />
+                    <div class="col-xs-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <span>پرداخت قابل تنظیم</span>
+                            </div>
+                            <div class="panel-body">
+                                <form asp-action="PayCustom" class="custom-pay">
+                                    <div class="row">
+                                        <div class="col-xs-12">
+                                            <div class="form-group">
+                                                <label>پذیرنده:</label>
+                                                <select class="form-control merchant-configs">
+                                                    <option data-config---merchant-name="" data-config---merchant-user="" data-config---merchant-password="" data-config---merchant-configuration-id="">----</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-6 col-md-3">
+
+                                            <div class="form-group">
+                                                <label>نام پذیرنده:</label>
+                                                <input type="text" class="form-control" placeholder="Merchant Name" name="Config.MerchantName">
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 col-md-3">
+
+                                            <div class="form-group">
+                                                <label>نام کاربری پذیرنده:</label>
+                                                <input type="text" class="form-control ltr" placeholder="Merchant User" name="Config.MerchantUser">
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 col-md-3">
+
+                                            <div class="form-group">
+                                                <label>کلمه عبور پذیرنده:</label>
+                                                <input type="password" class="form-control ltr" placeholder="Merchant Password" name="Config.MerchantPassword">
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6 col-md-3">
+
+                                            <div class="form-group">
+                                                <label>کد تنظیمات پذیرنده:</label>
+                                                <input type="text" class="form-control ltr" placeholder="Merchant Configuration Id" name="Config.MerchantConfigurationId">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="form-group">
+                                                <label>نوع سرویس:</label>
+                                                <select class="form-control">
+                                                    <option data-service-type-id="">----</option>
+                                                    <option data-service-type-id="1">خرید</option>
+                                                    <option data-service-type-id="3">قبض</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-6">
+                                            <div class="form-group">
+                                                <label>کد نوع سرویس:</label>
+                                                <input type="text" class="form-control ltr" placeholder="Service Type Id" name="ServiceTypeId">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-12 col-sm-4">
+                                            <div class="form-group">
+                                                <label>مبلغ:</label>
+                                                <input type="text" class="form-control ltr" placeholder="مبلغ به ریال" name="Amount">
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-4">
+                                            <div class="form-group">
+                                                <label>موبایل:</label>
+                                                <input type="text" class="form-control ltr" placeholder="شماره موبایل" name="Mobile">
+                                            </div>
+                                        </div>
+                                        <div class="col-xs-12 col-sm-4">
+                                            <div class="form-group">
+                                                <label>شناسه پرداخت:</label>
+                                                <input type="text" class="form-control ltr" placeholder="Payment Id" name="PaymentId">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="row">
+                                        <div class="col-xs-12 additional-data-place">
+                                            <a class="btn btn-warning btn-block add-additional-data">
+                                                <i class="fas fa-plus"></i>
+                                                Add Additional Data
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <div class="row">
+                                        <div class="col-xs-12 settlement-portion-place">
+                                            <a class="btn btn-danger btn-block add-settlement-portion">
+                                                <i class="fas fa-plus"></i>
+                                                Add Settlement Portion
+                                            </a>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default portion-template" style="display:none;">
+                                        <div class="panel-body">
+                                            <i class="fas fa-times-circle text-danger"></i>
+                                            <div class="row">
+                                                <div class="col-xs-12 col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>شماره شبا:</label>
+                                                        <input type="text" class="form-control ltr" placeholder="Iban" name="SettlementPortions[index].IBAN" disabled="disabled" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>مبلغ:</label>
+                                                        <input type="text" class="form-control ltr" placeholder="Amount In Rials" name="SettlementPortions[index].AmountInRials" disabled="disabled" />
+                                                    </div>
+                                                </div>
+                                                <div class="col-xs-12 col-sm-4">
+                                                    <div class="form-group">
+                                                        <label>شناسه پرداخت:</label>
+                                                        <input type="text" class="form-control ltr" placeholder="Payment Id" name="SettlementPortions[index].PaymentId" disabled="disabled" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <hr />
+                                    <p>
+                                        توجه فرمایید که پرداخت های از این فرم قابلیت verify و settle و reverse را ندارند و بصورت اتوماتیک برگشت خواهند خورد. این فرم فقط برای این است که مطمئن شوید تراکنش اصلی بدون مشکل پرداخت خواهد شد.
+                                        زمانی که تراکنش اصلی با موفقیت پرداخت گردد، عملیات های ذکر شده بدون مشکل انجام خواهند شد.
+                                    </p>
+                                    <hr />
+                                    <button type="submit" class="btn btn-primary btn-block">پرداخت</button>
+                                </form>
+                            </div>
+                        </div>
                     </div>
-                    <div class="form-group">
-                        <label>موبایل:</label>
-                        <input type="text" class="form-control ltr" placeholder="شماره موبایل" name="Mobile">
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block">پرداخت</button>
-                </form>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-3 col-md-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <span>خرید شارژ موبایل</span>
-            </div>
-            <div class="panel-body">
-                <form asp-action="PayCharge">
-                    <div class="form-group">
-                        <label>موبایل شارژ شونده:</label>
-                        <input type="text" class="form-control ltr" placeholder="شماره موبایل شارژ" name="DestinationMobile">
-                    </div>
-                    <div class="form-group">
-                        <label>نوع شارژ:</label>
-                        <select class="form-control">
-                            <option data-telecom-operator-id="" data-product-id="" data-amount="">----</option>
-                            <optgroup label="همراه اول">
-                                <option data-telecom-operator-id="1" data-product-id="514" data-amount="10000">1,000 توماني</option>
-                                <option data-telecom-operator-id="1" data-product-id="515" data-amount="20000">2,000 توماني</option>
-                                <option data-telecom-operator-id="1" data-product-id="516" data-amount="50000">5,000 توماني</option>
-                            </optgroup>
-                            <optgroup label="ایرانسل">
-                                <option data-telecom-operator-id="2" data-product-id="509" data-amount="10900">1,000 توماني</option>
-                                <option data-telecom-operator-id="2" data-product-id="510" data-amount="21800">2,000 توماني</option>
-                                <option data-telecom-operator-id="2" data-product-id="511" data-amount="54500">5,000 توماني</option>
-                            </optgroup>
-                            <optgroup label="رایتل">
-                                <option data-telecom-operator-id="4" data-product-id="521" data-amount="20000">2,000 توماني</option>
-                                <option data-telecom-operator-id="4" data-product-id="522" data-amount="50000">5,000 توماني</option>
-                                <option data-telecom-operator-id="4" data-product-id="523" data-amount="100000">10,000 توماني</option>
-                            </optgroup>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>کد اپراتور:</label>
-                        <input type="text" class="form-control ltr" placeholder="کد اپراتور" name="TelecomOperatorId">
-                    </div>
-                    <div class="form-group">
-                        <label>کد شارژ:</label>
-                        <input type="text" class="form-control ltr" placeholder="کد شارژ" name="ProductId">
-                    </div>
-                    <div class="form-group">
-                        <label>مبلغ:</label>
-                        <input type="text" class="form-control ltr" placeholder="مبلغ به ریال" name="Amount">
-                    </div>
-                    <div class="form-group">
-                        <label>موبایل:</label>
-                        <input type="text" class="form-control ltr" placeholder="شماره موبایل" name="Mobile">
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block">پرداخت</button>
-                </form>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-3 col-md-4">
-        <div class="panel panel-default">
-            <div class="panel-heading">
-                <span>خرید بسته</span>
-            </div>
-            <div class="panel-body">
-                <form asp-action="PayBolton">
-                    <div class="form-group">
-                        <label>موبایل شارژ شونده:</label>
-                        <input type="text" class="form-control ltr" placeholder="شماره موبایل شارژ" name="DestinationMobile">
-                    </div>
-                    <div class="form-group">
-                        <label>نوع شارژ:</label>
-                        <select class="form-control">
-                            <option data-telecom-operator-id="" data-product-id="" data-amount="">----</option>
-                            <optgroup label="ایرانسل - سیمکارت اعتباری">
-                                <option data-telecom-operator-id="2" data-product-id="456" data-amount="17440" data-sim-type-id="1">شصت مگ 1,600ت</option>
-                            </optgroup>
-                            <optgroup label="همراه اول - سیمکارت اعتباری">
-                                <option data-telecom-operator-id="1" data-product-id="1001027" data-amount="17440" data-sim-type-id="1">1 روزه  60مگ</option>
-                            </optgroup>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label>نوع سیمکارت:</label>
-                        <input type="text" class="form-control ltr" placeholder="نوع سیمکارت" name="SimTypeId">
-                    </div>
-                    <div class="form-group">
-                        <label>کد اپراتور:</label>
-                        <input type="text" class="form-control ltr" placeholder="کد اپراتور" name="TelecomOperatorId">
-                    </div>
-                    <div class="form-group">
-                        <label>کد شارژ:</label>
-                        <input type="text" class="form-control ltr" placeholder="کد شارژ" name="ProductId">
-                    </div>
-                    <div class="form-group">
-                        <label>مبلغ:</label>
-                        <input type="text" class="form-control ltr" placeholder="مبلغ به ریال" name="Amount">
-                    </div>
-                    <div class="form-group">
-                        <label>موبایل:</label>
-                        <input type="text" class="form-control ltr" placeholder="شماره موبایل" name="Mobile">
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block">پرداخت</button>
-                </form>
+                </div>
             </div>
         </div>
     </div>
@@ -307,7 +495,8 @@
                             var inputName = name.replace(/\b[a-z]/g, function (letter) {
                                 return letter.toUpperCase();
                             });
-                            var input = form.find('input[type="text"][name="' + inputName + '"]');
+                            inputName = inputName.replace('-', '.');
+                            var input = form.find('input[name="' + inputName + '"]');
                             var value = data[name];
                             input.val(value);
                             input.prop('readonly', value && true);
@@ -361,6 +550,83 @@
                         });
                     });
                 });
+
+                $('.add-additional-data').click(function () {
+                    var name = prompt('Enter AdditionalData Name:');
+                    if (name) {
+                        var html = '<div class="form-group"><label><i class="fas fa-times-circle text-danger" onclick="$(this).closest(\'.form-group\').remove();"></i> - ' + name + ':</label><input type="text" class="form-control ltr" placeholder="' + name + '" name="AdditionalData[' + name + ']" /></div>';
+                        var tags = $(html);
+                        $('.additional-data-place').append(tags);
+                    }
+                });
+
+                $('.add-settlement-portion').click(function () {
+                    var cloned = $('.portion-template').clone().removeClass('portion-template').show();
+                    var index = Number($(this).data('nextIndex'));
+                    if (isNaN(index)) index = 0;
+                    cloned.find('input').each(function () {
+                        $(this).prop('disabled', false);
+                        $(this).attr('name', $(this).attr('name').replace('index', index));
+                    });
+                    cloned.find('.fas.fa-times-circle').click(function () {
+                        $(this).closest('.panel.panel-default').remove();
+                        $('.settlement-portion-place .panel.panel-default').each(function (index) {
+                            $(this).find('input').each(function () {
+                                $(this).attr('name', $(this).attr('name').replace(/\[*.\]/, '[' + index + ']'));
+                            });
+                        });
+                    });
+                    $('.settlement-portion-place').append(cloned);
+                    $(this).data('nextIndex', ++index)
+                });
+
+                $('form.custom-pay').submit(function () {
+                    var form = $(this);
+                    var config = {
+                        name: form.find('input[name="Config.MerchantName"]').val(),
+                        user: form.find('input[name="Config.MerchantUser"]').val(),
+                        pass: form.find('input[name="Config.MerchantPassword"]').val(),
+                        cid: form.find('input[name="Config.MerchantConfigurationId"]').val()
+                    };
+
+                    var exist = false;
+                    var configs = page.getMerchantConfigs();
+                    $(configs).each(function (index, item) {
+                        if (item.user == config.user) {
+                            exist = true;
+                            return true;
+                        }
+                    });
+
+                    if (!exist) {
+                        configs.push(config);
+                        page.setMerchantConfigs(configs);
+                    }
+                });
+
+                var configs = page.getMerchantConfigs();
+                $(configs).each(function (index, item) {
+                    var tag = '<option data-config---merchant-name="' + item.name + '" data-config---merchant-user="' + item.user + '" data-config---merchant-password="' + item.pass + '" data-config---merchant-configuration-id="' + item.cid + '">' + item.name + ' - (' + item.user + ')</option>';
+                    $('.merchant-configs').append(tag);
+                });
+            },
+            merchantConfigsName: 'auisybausydu6',
+            getMerchantConfigs: function () {
+                try {
+                    var value = localStorage.getItem(page.merchantConfigsName);
+                    if (value)
+                        return JSON.parse(value);
+                } catch (e) {
+                    console.log(e);
+                }
+                return [];
+            },
+            setMerchantConfigs: function (configs) {
+                try {
+                    localStorage.setItem(page.merchantConfigsName, JSON.stringify(configs));
+                } catch (e) {
+                    console.log(e);
+                }
             }
         };
         $(document).ready(page.init);
