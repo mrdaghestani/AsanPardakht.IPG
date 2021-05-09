@@ -177,7 +177,7 @@ namespace ApIpgSample.Controllers
                     }
                 }
 
-                var tokenModel = await _services.GenerateToken(tokenRequest);
+                var tokenModel = await service.GenerateToken(tokenRequest);
                 return View("Pay", tokenModel);
             }
             catch (Exception exc)
