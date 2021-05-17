@@ -100,5 +100,13 @@ namespace AsanPardakht.IPG.ApiModels.Responses
         public string BillOrganizationNameFa { get; set; }
 
         #endregion
+        /// <summary>
+        /// زمان انجام تراکنش
+        /// </summary>
+        public DateTime? PayGateTranDate { get; set; }
+        /// <summary>
+        /// زمان انجام تراکنش
+        /// </summary>
+        public double PayGateTranDateEpoch { get; set; }
     }
 }
