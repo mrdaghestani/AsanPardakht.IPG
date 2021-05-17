@@ -21,7 +21,7 @@ node {
     }
 
     stage('Running Container') {
-        app.run(" --name ${imageName}");
+        app.run(" --restart=always --name ${imageName}");
     }
 
     stage('Connecting to Networks') {
