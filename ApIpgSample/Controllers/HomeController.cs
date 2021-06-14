@@ -5,6 +5,7 @@ using AsanPardakht.IPG.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 using System;
 using System.Diagnostics;
 using System.Linq;
@@ -14,11 +15,13 @@ namespace ApIpgSample.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IOptionsMonitor<AsanPardakht.IPG.Config> _config;
         private readonly ILogger<HomeController> _logger;
         private readonly IServices _services;
 
-        public HomeController(ILogger<HomeController> logger, IServices services)
+        public HomeController(ILogger<HomeController> logger, IServices services, IOptionsMonitor<AsanPardakht.IPG.Config> config)
         {
+            _config = config;
             _logger = logger;
             _services = services;
         }
@@ -150,6 +153,9 @@ namespace ApIpgSample.Controllers
             try
             {
                 var config = data.Config;
+                config.GatewayUrl = _config.CurrentValue.GatewayUrl;
+                config.RestEndpoint = _config.CurrentValue.RestEndpoint;
+
                 var client = new AsanPardakht.IPG.Client(config);
                 var service = new AsanPardakht.IPG.Services(client, config);
                 var localInvoiceIdGenerator = new AsanPardakht.IPG.DefaultLocalInvoiceIdGenerator();
