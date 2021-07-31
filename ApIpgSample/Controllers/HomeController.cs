@@ -76,7 +76,7 @@ namespace ApIpgSample.Controllers
         {
             try
             {
-                var tokenModel = await _services.GenerateBuyToken(data.Amount, GenerateCallbackUrl(Request), data.PaymentId, data.Mobile);
+                var tokenModel = await _services.GenerateBuyDefaultSharingToken(data.Amount, GenerateCallbackUrl(Request), data.PaymentId, data.Mobile);
                 return View(tokenModel);
             }
             catch (Exception exc)

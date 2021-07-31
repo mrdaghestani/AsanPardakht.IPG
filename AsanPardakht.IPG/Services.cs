@@ -60,7 +60,34 @@ namespace AsanPardakht.IPG
             }
 
         }
+        /// <summary>
+        /// add default sharing
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
+        /// <exception cref="InvalidIdentityException"></exception>
+        /// <exception cref="AsanPardakhtIPGException"></exception>
+        public async Task<GenerateTokenResponse> GenerateShareToken(GenerateTokenRequest data)
+        {
+            var response = await _client.TryExecute<string>(HttpMethod.Post, "/v1/TokenWithDefaultSharing", data);
 
+            switch (response.responseStatusCode)
+            {
+                case 200:
+                    return new GenerateTokenResponse
+                    {
+                        RefId = response.result,
+                        Mobileap = data.MobileNumber,
+                        LocalInvoiceId = data.LocalInvoiceId,
+                        GatewayUrl = GetGatewayUrl(),
+                    };
+                case 473:
+                    throw new InvalidIdentityException(response.responseStatusCode);
+                default:
+                    throw response.exception;
+            }
+
+        }
         public async Task<VerifyResponse> Verify(VerifyRequest data)
         {
             var response = await _client.TryExecute<BlankResponse>(HttpMethod.Post, "/v1/Verify", data);
@@ -191,6 +218,15 @@ namespace AsanPardakht.IPG
             if (!string.IsNullOrWhiteSpace(paymentId))
                 request.SetPaymentId(paymentId);
             return await GenerateToken(request);
+        }
+        public async Task<GenerateTokenResponse> GenerateBuyDefaultSharingToken(ulong amountInRials, string callbackURL, string paymentId = null, string mobileNumber = null)
+        {
+            var request = new GenerateTokenRequest(_config.MerchantConfigurationId, await _localInvoiceIdGenerator.GetNext(), amountInRials, callbackURL);
+            if (!string.IsNullOrWhiteSpace(mobileNumber))
+                request.SetMobileNumber(mobileNumber);
+            if (!string.IsNullOrWhiteSpace(paymentId))
+                request.SetPaymentId(paymentId);
+            return await GenerateShareToken(request);
         }
 
         public async Task<GenerateTokenResponse> GenerateTelecomeChargeToken(ulong amountInRials, string callbackURL, TelecomeChargeData chargeData, string mobileNumber = null)
