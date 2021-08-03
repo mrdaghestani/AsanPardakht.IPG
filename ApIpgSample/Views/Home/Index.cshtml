@@ -168,6 +168,9 @@
             <li>
                 <a href="#custom" data-toggle="tab">پرداخت قابل تنظیم</a>
             </li>
+            <li>
+                <a href="#custom_scenario" data-toggle="tab">سناریوهای خاص</a>
+            </li>
         </ul>
         <div class="tab-content">
             <div id="default" class="tab-pane fade in active">
@@ -191,6 +194,12 @@
                                     <div class="form-group">
                                         <label>شناسه پرداخت:</label>
                                         <input type="text" class="form-control ltr" placeholder="شناسه پرداخت" name="PaymentId">
+                                    </div>
+                                    <div class="checkbox">
+                                        <label>
+                                            <input type="checkbox" name="UseDefaultSharing" value="True" />
+                                            استفاده از تسهیم پیش فرض
+                                        </label>
                                     </div>
                                     <button type="submit" class="btn btn-primary btn-block">پرداخت</button>
                                 </form>
@@ -469,6 +478,31 @@
                                         زمانی که تراکنش اصلی با موفقیت پرداخت گردد، عملیات های ذکر شده بدون مشکل انجام خواهند شد.
                                     </p>
                                     <hr />
+                                    <button type="submit" class="btn btn-primary btn-block">پرداخت</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="custom_scenario" class="tab-pane fade">
+                <div class="row">
+                    <br /><br />
+                    <div class="col-lg-3 col-md-6 col-xs-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <span>قوه قضاییه</span>
+                            </div>
+                            <div class="panel-body">
+                                <form asp-action="PayJud">
+                                    <div class="form-group">
+                                        <label>شناسه:</label>
+                                        <input type="text" class="form-control ltr" placeholder="شناسه استعلام" name="ReferenceId">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>موبایل:</label>
+                                        <input type="text" class="form-control ltr" placeholder="شماره موبایل" name="Mobile">
+                                    </div>
                                     <button type="submit" class="btn btn-primary btn-block">پرداخت</button>
                                 </form>
                             </div>

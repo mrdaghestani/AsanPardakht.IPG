@@ -33,15 +33,16 @@ namespace AsanPardakht.IPG
             }
             return _localInvoiceIdGenerator.GetNext();
         }
-        private string GetGatewayUrl()
+        public string GetGatewayUrl()
         {
             if (string.IsNullOrWhiteSpace(_config.GatewayUrl))
                 _config.GatewayUrl = null;
             return _config.GatewayUrl ?? DefaultGatewayUrl;
         }
-        public async Task<GenerateTokenResponse> GenerateToken(GenerateTokenRequest data)
+        public async Task<GenerateTokenResponse> GenerateToken(GenerateTokenRequest data, bool useDefaultSharing = false)
         {
-            var response = await _client.TryExecute<string>(HttpMethod.Post, "/v1/Token", data);
+            var tokenUrl = useDefaultSharing ? "/v1/TokenWithDefaultSharing" : "/v1/Token";
+            var response = await _client.TryExecute<string>(HttpMethod.Post, tokenUrl, data);
 
             switch (response.responseStatusCode)
             {
@@ -183,14 +184,14 @@ namespace AsanPardakht.IPG
             return _client.Execute<string>(HttpMethod.Get, "/v1/Time");
         }
 
-        public async Task<GenerateTokenResponse> GenerateBuyToken(ulong amountInRials, string callbackURL, string paymentId = null, string mobileNumber = null)
+        public async Task<GenerateTokenResponse> GenerateBuyToken(ulong amountInRials, string callbackURL, string paymentId = null, string mobileNumber = null, bool useDefaultSharing = false)
         {
             var request = new GenerateTokenRequest(_config.MerchantConfigurationId, await _localInvoiceIdGenerator.GetNext(), amountInRials, callbackURL);
             if (!string.IsNullOrWhiteSpace(mobileNumber))
                 request.SetMobileNumber(mobileNumber);
             if (!string.IsNullOrWhiteSpace(paymentId))
                 request.SetPaymentId(paymentId);
-            return await GenerateToken(request);
+            return await GenerateToken(request, useDefaultSharing);
         }
 
         public async Task<GenerateTokenResponse> GenerateTelecomeChargeToken(ulong amountInRials, string callbackURL, TelecomeChargeData chargeData, string mobileNumber = null)

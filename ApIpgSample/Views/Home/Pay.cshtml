@@ -1,4 +1,4 @@
-﻿@model AsanPardakht.IPG.ApiModels.Responses.GenerateTokenResponse
+﻿@model RedirectToGatewayViewModel
 @{
     ViewData["Title"] = "در حال انتقال برای پرداخت";
 }
@@ -20,28 +20,26 @@
 
 @section Scripts{
     <script type="text/javascript">
-        function postRefId(gatewayUrl, refId, mobileap) {
+        var data = JSON.parse('@(Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model)))');
+        var postRefId = function (data) {
             var form = document.createElement("form");
             form.setAttribute("method", "POST");
-            form.setAttribute("action", gatewayUrl);
+            form.setAttribute("action", data.GatewayUrl);
             form.setAttribute("target", "_self");
 
-            var refIdField = document.createElement("input");
-            refIdField.setAttribute("name", "RefId");
-            refIdField.setAttribute("value", refId);
-            form.appendChild(refIdField);
-
-            if (mobileap) {
-                var mobileField = document.createElement("input");
-                mobileField.setAttribute("name", "Mobileap");
-                mobileField.setAttribute("value", mobileap);
-                form.appendChild(mobileField);
+            if (data.PostData) {
+                for (var fieldName in data.PostData) {
+                    var field = document.createElement("input");
+                    field.setAttribute("name", fieldName);
+                    field.setAttribute("value", data.PostData[fieldName]);
+                    form.appendChild(field);
+                }
             }
 
             document.body.appendChild(form);
             form.submit();
             document.body.removeChild(form);
         }
-        postRefId('@(Model.GatewayUrl)', '@(Model.RefId)', '@(Model.Mobileap)');
+        postRefId(data);
     </script>
 }

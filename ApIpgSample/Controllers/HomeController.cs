@@ -1,6 +1,8 @@
 ﻿using ApIpgSample.Models;
+using AsanPardakht.IPG;
 using AsanPardakht.IPG.Abstractions;
 using AsanPardakht.IPG.ApiModels.Requests;
+using AsanPardakht.IPG.ApiModels.Responses;
 using AsanPardakht.IPG.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -36,6 +38,11 @@ namespace ApIpgSample.Controllers
             model.Time = await _services.GetTime();
             return View(model);
         }
+        public IActionResult Headers()
+        {
+            return View(Request.Headers);
+        }
+
         private string GenerateCallbackUrl(HttpRequest request)
         {
             var scheme = request.Headers["X-Forwarded-Proto"].ToString();
@@ -65,19 +72,27 @@ namespace ApIpgSample.Controllers
                 };
             }
         }
-        public IActionResult Headers()
+        private RedirectToGatewayViewModel GenerateRedirectToGatewayViewModel(GenerateTokenResponse tokenResponse)
         {
-            return View(Request.Headers);
+            var viewModel = new RedirectToGatewayViewModel();
+            viewModel.GatewayUrl = tokenResponse.GatewayUrl;
+            viewModel.PostData.Add("RefId", tokenResponse.RefId);
+            if (!string.IsNullOrWhiteSpace(tokenResponse.Mobileap))
+            {
+                viewModel.PostData.Add("Mobileap", tokenResponse.Mobileap);
+            }
+            return viewModel;
         }
 
-
+        #region Payments
         [HttpPost]
         public async Task<IActionResult> Pay(PayViewModel data)
         {
             try
             {
-                var tokenModel = await _services.GenerateBuyToken(data.Amount, GenerateCallbackUrl(Request), data.PaymentId, data.Mobile);
-                return View(tokenModel);
+                var tokenModel = await _services.GenerateBuyToken(data.Amount, GenerateCallbackUrl(Request), data.PaymentId, data.Mobile, data.UseDefaultSharing);
+                var viewModel = GenerateRedirectToGatewayViewModel(tokenModel);
+                return View(viewModel);
             }
             catch (Exception exc)
             {
@@ -97,7 +112,8 @@ namespace ApIpgSample.Controllers
                     throw new Exception("TelecomOperator not found");
                 var chargeData = new TelecomeChargeData(data.DestinationMobile, telOperator, data.ProductId);
                 var tokenModel = await _services.GenerateTelecomeChargeToken(data.Amount, GenerateCallbackUrl(Request), chargeData, data.Mobile);
-                return View("Pay", tokenModel);
+                var viewModel = GenerateRedirectToGatewayViewModel(tokenModel);
+                return View("Pay", viewModel);
             }
             catch (Exception exc)
             {
@@ -120,7 +136,8 @@ namespace ApIpgSample.Controllers
                     throw new Exception("SimType not found");
                 var boltonData = new TelecomeBoltonData(data.DestinationMobile, telOperator, simType, data.ProductId);
                 var tokenModel = await _services.GenerateTelecomeBoltonToken(data.Amount, GenerateCallbackUrl(Request), boltonData, data.Mobile);
-                return View("Pay", tokenModel);
+                var viewModel = GenerateRedirectToGatewayViewModel(tokenModel);
+                return View("Pay", viewModel);
             }
             catch (Exception exc)
             {
@@ -137,7 +154,8 @@ namespace ApIpgSample.Controllers
             {
                 var billData = new BillData(data.BillId, data.PayId, data.PhoneNumber);
                 var tokenModel = await _services.GenerateBillToken(data.Amount, GenerateCallbackUrl(Request), billData, data.Mobile);
-                return View("Pay", tokenModel);
+                var viewModel = GenerateRedirectToGatewayViewModel(tokenModel);
+                return View("Pay", viewModel);
             }
             catch (Exception exc)
             {
@@ -184,7 +202,8 @@ namespace ApIpgSample.Controllers
                 }
 
                 var tokenModel = await service.GenerateToken(tokenRequest);
-                return View("Pay", tokenModel);
+                var viewModel = GenerateRedirectToGatewayViewModel(tokenModel);
+                return View("Pay", viewModel);
             }
             catch (Exception exc)
             {
@@ -194,6 +213,34 @@ namespace ApIpgSample.Controllers
                 });
             }
         }
+        [HttpPost]
+        public async Task<IActionResult> PayJud(PayJudViewModel data)
+        {
+            try
+            {
+                var vModel = new RedirectToGatewayViewModel
+                {
+                    GatewayUrl = $"{_services.GetGatewayUrl()}/Jud"
+                };
+                vModel.PostData.Add("Orderid", data.ReferenceId);
+                vModel.PostData.Add("Backurl", GenerateCallbackUrl(Request));
+                if (!string.IsNullOrWhiteSpace(data.Mobile))
+                {
+                    vModel.PostData.Add("Mobileap", data.Mobile);
+                }
+                return View("Pay", vModel);
+            }
+            catch (Exception exc)
+            {
+                return View("Error", new ErrorViewModel
+                {
+                    Message = exc.Message
+                });
+            }
+        }
+        #endregion
+
+        #region Operations
         [HttpPost]
         public async Task<IActionResult> Settle([FromBody] TransactionIdentityViewModel data)
         {
@@ -233,7 +280,7 @@ namespace ApIpgSample.Controllers
                 return Json(new { isSuccess = false, error = exc.Message });
             }
         }
-
+        #endregion
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
         public IActionResult Error()

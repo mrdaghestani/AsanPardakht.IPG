@@ -10,5 +10,6 @@ namespace ApIpgSample.Models
         public ulong Amount { get; set; }
         public string Mobile { get; set; }
         public string PaymentId { get; set; }
+        public bool UseDefaultSharing { get; set; }
     }
 }
