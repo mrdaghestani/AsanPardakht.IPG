@@ -220,7 +220,7 @@ namespace ApIpgSample.Controllers
             {
                 var vModel = new RedirectToGatewayViewModel
                 {
-                    GatewayUrl = $"{_services.GetGatewayUrl()}/Jud"
+                    GatewayUrl = $"{_services.GetGatewayUrl()}Jud"
                 };
                 vModel.PostData.Add("Orderid", data.ReferenceId);
                 vModel.PostData.Add("Backurl", GenerateCallbackUrl(Request));
