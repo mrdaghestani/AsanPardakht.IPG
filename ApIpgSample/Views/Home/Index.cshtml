@@ -339,6 +339,27 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="col-lg-3 col-md-6 col-xs-12">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">
+                                <span>پرداخت با توکن</span>
+                            </div>
+                            <div class="panel-body">
+                                <form asp-action="Pay">
+                                    <div class="form-group">
+                                        <label>توکن:</label>
+                                        <input type="text" class="form-control ltr" placeholder="مبلغ به ریال" name="Amount">
+                                    </div>
+                                    <div class="form-group">
+                                        <label>موبایل:</label>
+                                        <input type="text" class="form-control ltr" placeholder="شماره موبایل" name="Mobile">
+                                    </div>
+                                    <button type="submit" class="btn btn-primary btn-block">پرداخت</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div id="custom" class="tab-pane fade">
