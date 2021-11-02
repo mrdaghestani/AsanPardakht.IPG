@@ -220,14 +220,10 @@ namespace ApIpgSample.Controllers
             {
                 var vModel = new RedirectToGatewayViewModel
                 {
-                    GatewayUrl = $"{_services.GetGatewayUrl()}Jud"
+                    GatewayUrl = $"{_services.GetGatewayUrl()}jud/"
                 };
-                vModel.PostData.Add("Orderid", data.ReferenceId);
-                vModel.PostData.Add("Backurl", GenerateCallbackUrl(Request));
-                if (!string.IsNullOrWhiteSpace(data.Mobile))
-                {
-                    vModel.PostData.Add("Mobileap", data.Mobile);
-                }
+                vModel.PostData.Add("orderid", data.ReferenceId);
+                vModel.PostData.Add("backurl", GenerateCallbackUrl(Request).Split('?')[0]);
                 return View("Pay", vModel);
             }
             catch (Exception exc)
