@@ -16,7 +16,7 @@
   <p align="center">
     <br />
     <br />
-    <a href="https://ap_ipg_sample.itsbeta.ir/">View Demo</a>
+    <a href="https://ap-ipg-sample.itsbeta.ir/">View Demo</a>
     ·
     <a href="https://github.com/mrdaghestani/AsanPardakht.IPG/issues">Report Bug</a>
     ·
